@@ -107,21 +107,27 @@ namespace TechMarket.Controllers
             return View();
         }
         [HttpPost]
-        [HttpPost]
         public IActionResult Login(Login login)
         {
             if (ModelState.IsValid && ValidateLogin(login.Username, login.Password))
             {
-                // Set session variable to mark the user as logged in
-                 HttpContext.Session.SetString("IsLoggedIn", "true");
+                // Retrieve user from the database based on the username
+                Account user = _dbContext.Accounts.SingleOrDefault(a => a.Username == login.Username);
 
-                return RedirectToAction("Index", "Home");
+                // Check if the user exists
+                if (user != null)
+                {
+                    // Set session variables for user ID and username
+                    HttpContext.Session.SetInt32("UserId", user.AcctId);
+                    HttpContext.Session.SetString("Username", user.Username);
+                    HttpContext.Session.SetString("IsLoggedIn", "true");
+
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "Invalid username or password");
-                return View("Login", login);
-            }
+
+            ModelState.AddModelError(string.Empty, "Invalid username or password");
+            return View("Login", login);
         }
 
 

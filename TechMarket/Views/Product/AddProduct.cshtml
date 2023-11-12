@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Product;
+
+<h1>Add Product</h1>
+
+<form asp-action="AddProduct" method="post">
+    
+    
+    <div class="form-group">
+        <label asp-for="ProdImage"> Product Image</label>
+        <input asp-for="ProdImage" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ProdName">Product Name</label>
+        <input asp-for="ProdName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ProdDesc">Description</label>
+        <input asp-for="ProdDesc" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ProdQuantity">Quantity</label>
+        <input asp-for="ProdQuantity" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ProdTags">Rank</label>
+        <select asp-for="ProdTags" asp-items="Html.GetEnumSelectList(typeof(ProdTags))" class="form-control"><option disabled selected>Select Tag</option></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProdPrice">Price</label>
+        <input asp-for="ProdPrice" class="form-control" />
+    </div>
+    
+   
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

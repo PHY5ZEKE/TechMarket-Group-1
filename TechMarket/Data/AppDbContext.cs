@@ -27,13 +27,12 @@ namespace TechMarket.Data
                         Address = "Lubao, Pampanga",
                         Birthday = DateTime.Parse("09/07/2001"),
                         ContactNo = "09762909844"
-
                     }
 
 
                   );
 
-            modelBuilder.Entity<Account>().HasData(
+            modelBuilder.Entity<Product>().HasData(
                 new Product()
                 {
                     ProdId = 1,
@@ -45,8 +44,6 @@ namespace TechMarket.Data
                     ProdTags = ProdTags.Smartphones,
                     ProdQuantity = 1,
                     ProdPrice = "50,000"
-
-                    
                 }
                 );
 

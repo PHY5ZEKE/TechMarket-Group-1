@@ -38,13 +38,33 @@ namespace TechMarket.Controllers
             return View();
         }
         [HttpPost]
+       
         public IActionResult AddProduct(Product newProduct)
         {
-            _dbContext.Products.Add(newProduct);
-            _dbContext.SaveChanges();
-            return RedirectToAction("Index");
+            if (HttpContext.Session.GetString("IsLoggedIn") == "true")
+            {
+                // Retrieve user ID and username from session
+                int? userId = HttpContext.Session.GetInt32("UserId");
+                string username = HttpContext.Session.GetString("Username");
 
+                if (userId.HasValue)
+                {
+                    // Set the user ID and username for the new product
+                    newProduct.AcctId = userId.Value;
+                    newProduct.Username = username;
+
+                    // Add the product to the database
+                    _dbContext.Products.Add(newProduct);
+                    _dbContext.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+            }
+
+            // Redirect to login if not logged in
+            return RedirectToAction("Login", "Account");
         }
+
         [HttpGet]
         public IActionResult EditProduct(int id)
         {
@@ -82,11 +102,11 @@ namespace TechMarket.Controllers
         [HttpGet]
         public IActionResult DeleteProduct(int id)
         {
-            Product? products = _dbContext.Products.FirstOrDefault(st => st.ProdId == id);
+            Product? product = _dbContext.Products.FirstOrDefault(st => st.ProdId == id);
 
-            if (products != null)
+            if (product != null)
             {
-                return View(products);
+                return View(product);
             }
 
             return NotFound();
@@ -95,8 +115,8 @@ namespace TechMarket.Controllers
         [HttpPost]
         public IActionResult DeleteProduct(Product delProduct)
         {
-            Product? products= _dbContext.Products.FirstOrDefault(st => st.ProdId == delProduct.ProdId);
-            _dbContext.Products.Remove(products);
+            Product? product= _dbContext.Products.FirstOrDefault(st => st.ProdId == delProduct.ProdId);
+            _dbContext.Products.Remove(product);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
 

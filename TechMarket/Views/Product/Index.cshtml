@@ -1,0 +1,50 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Products</h1>
+<center><a class="btn btn-primary" asp-action="AddProduct">Add Product</a></center>
+<br />
+
+<table class="table">
+    <tr>
+        <th>Product Id</th>
+        <th>Account Id</th>
+        <th>Seller</th>
+        <th>Image</th>
+        <th>Product Name</th>
+        <th>Product Description</th>
+        <th>Tag</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Show Details</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+
+    @foreach (var Product in Model)
+    {
+        <tr>
+            <td>@Product.ProdId</td>
+            <td>@Product.AcctId</td>
+            <td>@Product.Username</td>
+            <td>@Product.ProdImage</td>
+            <td>@Product.ProdName</td>
+            <td>@Product.ProdDesc</td>
+            <td>@Product.ProdTags</td>
+            <td>@Product.ProdQuantity</td>
+            <td>@Product.ProdPrice</td>
+            <td>
+                <center><a class="btn btn-primary" asp-action="ShowDetails" asp-route-id="@Product.ProdId">Show Details</a></center>
+            </td>
+            <td>
+                <center><a class="btn btn-primary" asp-action="EditProduct" asp-route-id="@Product.ProdId">Edit</a></center>
+            </td>
+            <td>
+                <center><a class="btn btn-danger" asp-action="DeleteProduct" asp-route-id="@Product.ProdId">Delete</a></center>
+            </td>
+        </tr>
+    }
+</table>
