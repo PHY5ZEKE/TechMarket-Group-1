@@ -15,11 +15,19 @@ namespace TechMarket.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
 
         public IActionResult Privacy()
         {
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
 

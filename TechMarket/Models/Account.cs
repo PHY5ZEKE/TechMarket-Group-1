@@ -12,7 +12,7 @@ namespace TechMarket.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public string Address { get; set; }
-        public DateTime Birthdate { get; set; }
+        public DateTime Birthday { get; set; }
         public string ContactNo { get; set; }
     }
 }

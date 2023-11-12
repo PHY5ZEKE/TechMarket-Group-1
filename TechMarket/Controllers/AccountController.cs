@@ -15,7 +15,10 @@ namespace TechMarket.Controllers
         
         public IActionResult Index()
         {
-
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View(_dbContext.Accounts);
         }
         public IActionResult ShowDetails(int id)
@@ -55,7 +58,7 @@ namespace TechMarket.Controllers
             return NotFound();
         }
         [HttpPost]
-        public IActionResult EditAcount(Account updateAccount)
+        public IActionResult EditAccount(Account updateAccount)
         {
 
             Account? account = _dbContext.Accounts.FirstOrDefault(st => st.AcctId == updateAccount.AcctId);
@@ -69,7 +72,7 @@ namespace TechMarket.Controllers
                 account.Username = updateAccount.Username;
                 account.Password = updateAccount.Password;
                 account.Address = updateAccount.Address;
-                account.Birthdate = updateAccount.Birthdate;
+                account.Birthday = updateAccount.Birthday;
                 account.ContactNo = updateAccount.ContactNo;
             }
             _dbContext.SaveChanges();
@@ -97,6 +100,34 @@ namespace TechMarket.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
 
+        }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        [HttpPost]
+        public IActionResult Login(Login login)
+        {
+            if (ModelState.IsValid && ValidateLogin(login.Username, login.Password))
+            {
+                // Set session variable to mark the user as logged in
+                 HttpContext.Session.SetString("IsLoggedIn", "true");
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Invalid username or password");
+                return View("Login", login);
+            }
+        }
+
+
+        private bool ValidateLogin(string username, string password)
+        {
+            return _dbContext.Accounts.Any(a => a.Username == username && a.Password == password);
         }
 
     }
