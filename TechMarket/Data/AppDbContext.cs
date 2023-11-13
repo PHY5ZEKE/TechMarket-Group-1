@@ -1,9 +1,10 @@
 ﻿using TechMarket.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TechMarket.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User>
     {
         
             public DbSet<Account> Accounts { get; set; }
@@ -26,7 +27,7 @@ namespace TechMarket.Data
                         Password ="admin123",
                         Address = "Lubao, Pampanga",
                         Birthday = DateTime.Parse("09/07/2001"),
-                        ContactNo = "09762909844"
+                        Phone = "09762909844"
                     }
 
 

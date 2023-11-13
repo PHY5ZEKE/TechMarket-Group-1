@@ -15,10 +15,7 @@ namespace TechMarket.Controllers
 
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            
             return View(_dbContext.Products);
         }
         public IActionResult ShowDetails(int id)
@@ -41,8 +38,8 @@ namespace TechMarket.Controllers
        
         public IActionResult AddProduct(Product newProduct)
         {
-            if (HttpContext.Session.GetString("IsLoggedIn") == "true")
-            {
+            
+            
                 // Retrieve user ID and username from session
                 int? userId = HttpContext.Session.GetInt32("UserId");
                 string username = HttpContext.Session.GetString("Username");
@@ -59,7 +56,7 @@ namespace TechMarket.Controllers
 
                     return RedirectToAction("Index");
                 }
-            }
+            
 
             // Redirect to login if not logged in
             return RedirectToAction("Login", "Account");

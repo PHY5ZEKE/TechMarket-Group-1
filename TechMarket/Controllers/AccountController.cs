@@ -1,18 +1,51 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using TechMarket.Data;
 using TechMarket.Models;
+using TechMarket.ViewModels;
+using System.Threading.Tasks;
 
 namespace TechMarket.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly AppDbContext _dbContext;
-
-        public AccountController(AppDbContext dbContext)
+        public AccountController(SignInManager<User> signInManager, AppDbContext dbContext, UserManager<User> userManager)
         {
+            _signInManager = signInManager;
+            _userManager = userManager;
             _dbContext = dbContext;
         }
-        
+        public IActionResult login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel loginInfo)
+        {
+            var result = await _signInManager.PasswordSignInAsync(loginInfo.UserName, loginInfo.Password, loginInfo.RememberMe, false);
+            ;
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Product");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Failed to Login");
+            }
+
+            return View(loginInfo);
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
+        }
+
         public IActionResult Index()
         {
             if (HttpContext.Session.GetString("IsLoggedIn") != "true")
@@ -24,7 +57,7 @@ namespace TechMarket.Controllers
         public IActionResult ShowDetails(int id)
         {
 
-           Account? account = _dbContext.Accounts.FirstOrDefault(st => st.AcctId == id);
+            Account? account = _dbContext.Accounts.FirstOrDefault(st => st.AcctId == id);
 
             if (account != null)
             {
@@ -33,23 +66,48 @@ namespace TechMarket.Controllers
             return NotFound();
         }
         [HttpGet]
-        public IActionResult AddAccount()
+        public IActionResult Register()
         {
-            return View();
+            return View("Register");
         }
         [HttpPost]
-        public IActionResult AddAccount(Account newAccount)
+        public async Task<IActionResult> Register(RegisterViewModel userEnteredData)
         {
-            _dbContext.Accounts.Add(newAccount);
-            _dbContext.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                User newUser = new User();
+                newUser.UserName = userEnteredData.UserName;
+                newUser.FirstName = userEnteredData.FirstName;
+                newUser.LastName = userEnteredData.LastName;
+                newUser.Email = userEnteredData.Email;
+                newUser.PhoneNumber = userEnteredData.Phone;
+                newUser.Birthday = userEnteredData.Birthday;
 
+                var result = await _userManager.CreateAsync(newUser, userEnteredData.Password);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+
+
+            }
+            return View(userEnteredData);
         }
-        [HttpGet]
+
+
+
         public IActionResult EditAccount(int id)
         {
 
-           Account? account = _dbContext.Accounts.FirstOrDefault(st => st.AcctId == id);
+            Account? account = _dbContext.Accounts.FirstOrDefault(st => st.AcctId == id);
 
             if (account != null)
             {
@@ -73,7 +131,7 @@ namespace TechMarket.Controllers
                 account.Password = updateAccount.Password;
                 account.Address = updateAccount.Address;
                 account.Birthday = updateAccount.Birthday;
-                account.ContactNo = updateAccount.ContactNo;
+                account.Phone = updateAccount.Phone;
             }
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
@@ -95,47 +153,17 @@ namespace TechMarket.Controllers
         [HttpPost]
         public IActionResult DeleteAccount(Account delAccount)
         {
-           Account? account = _dbContext.Accounts.FirstOrDefault(st => st.AcctId == delAccount.AcctId);
+            Account? account = _dbContext.Accounts.FirstOrDefault(st => st.AcctId == delAccount.AcctId);
             _dbContext.Accounts.Remove(account);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
 
         }
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult Login(Login login)
-        {
-            if (ModelState.IsValid && ValidateLogin(login.Username, login.Password))
-            {
-                // Retrieve user from the database based on the username
-                Account user = _dbContext.Accounts.SingleOrDefault(a => a.Username == login.Username);
+        
 
-                // Check if the user exists
-                if (user != null)
-                {
-                    // Set session variables for user ID and username
-                    HttpContext.Session.SetInt32("UserId", user.AcctId);
-                    HttpContext.Session.SetString("Username", user.Username);
-                    HttpContext.Session.SetString("IsLoggedIn", "true");
-
-                    return RedirectToAction("Index", "Home");
-                }
-            }
-
-            ModelState.AddModelError(string.Empty, "Invalid username or password");
-            return View("Login", login);
-        }
-
-
-        private bool ValidateLogin(string username, string password)
-        {
-            return _dbContext.Accounts.Any(a => a.Username == username && a.Password == password);
-        }
 
     }
+
 }
+
 
