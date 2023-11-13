@@ -48,11 +48,8 @@ namespace TechMarket.Controllers
 
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            return View(_dbContext.Accounts);
+            var users = _userManager.Users.ToList();
+            return View(users);
         }
         public IActionResult ShowDetails(int id)
         {

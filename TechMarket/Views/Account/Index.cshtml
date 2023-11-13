@@ -3,10 +3,10 @@
 *@
 @{
 }
+@model List<TechMarket.Data.User>
 
 <h1>Accounts</h1>
-<center><a class="btn btn-primary" asp-action="AddAccount">Add Account</a></center>
-<br />
+
 
 <table class="table">
     <tr>
@@ -16,30 +16,31 @@
         <th>Username</th>
         <th>Address</th>
         <th>Birthdate</th>
+        <th>Password</th>
         <th>Contact Number</th>
         <th>Show Details</th>
         <th>Update</th>
         <th>Delete</th>
     </tr>
 
-    @foreach (var Account in Model)
+    @foreach (var user in Model)
     {
         <tr>
-            <td>@Account.AcctId</td>
-            <td>@Account.FirstName @Account.LastName</td>
-            <td>@Account.Email</td>
-            <td>@Account.Username</td>
-            <td>@Account.Address</td>
-            <td>@Account.Birthday</td>
-            <td>@Account.ContactNo</td>
+           
+            <td>@user.FirstName @user.LastName</td>
+            <td>@user.Email</td>
+           
+           
+            <td>@user.Birthday</td>
+          
             <td>
-                <center><a class="btn btn-primary" asp-action="ShowDetails" asp-route-id="@Account.AcctId">Show Details</a></center>
+                <center><a class="btn btn-primary" asp-action="ShowDetails" asp-route-id="">Show Details</a></center>
             </td>
             <td>
-                <center><a class="btn btn-primary" asp-action="EditAccount" asp-route-id="@Account.AcctId">Edit</a></center>
+                <center><a class="btn btn-primary" asp-action="EditAccount" asp-route-id="">Edit</a></center>
             </td>
             <td>
-                <center><a class="btn btn-danger" asp-action="DeleteAccount" asp-route-id="@Account.AcctId">Delete</a></center>
+                <center><a class="btn btn-danger" asp-action="DeleteAccount" asp-route-id="">Delete</a></center>
             </td>
         </tr>
     }
