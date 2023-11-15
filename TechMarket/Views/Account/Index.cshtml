@@ -16,7 +16,6 @@
         <th>Username</th>
         <th>Address</th>
         <th>Birthdate</th>
-        <th>Password</th>
         <th>Contact Number</th>
         <th>Show Details</th>
         <th>Update</th>
@@ -27,20 +26,22 @@
     {
         <tr>
            
+            <td>@user.Id</td>
             <td>@user.FirstName @user.LastName</td>
             <td>@user.Email</td>
-           
-           
+            <td>@user.UserName</td>
+            <td>@user.Address</td>
             <td>@user.Birthday</td>
+            <td>@user.Phone</td>
           
             <td>
-                <center><a class="btn btn-primary" asp-action="ShowDetails" asp-route-id="">Show Details</a></center>
+                <center><a class="btn btn-primary" asp-action="ShowDetails" asp-route-id="@user.Id">Show Details</a></center>
             </td>
             <td>
-                <center><a class="btn btn-primary" asp-action="EditAccount" asp-route-id="">Edit</a></center>
+                <center><a class="btn btn-primary" asp-action="EditAccount" asp-route-id="@user.Id">Edit</a></center>
             </td>
             <td>
-                <center><a class="btn btn-danger" asp-action="DeleteAccount" asp-route-id="">Delete</a></center>
+                <center><a class="btn btn-danger" asp-action="DeleteAccount" asp-route-id="@user.Id">Delete</a></center>
             </td>
         </tr>
     }
