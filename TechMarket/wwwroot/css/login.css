@@ -1,0 +1,53 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Poppins');
+body{
+    font-family: 'Poppins';
+}
+h1{
+    font-weight: bolder;
+    margin-top: 30px;
+}
+h5, label{
+    font-weight: bold;
+}
+.login-container{
+    display: flex;
+    margin-top: -20px;
+}
+.login-left, .login-right {
+    background-color: #F5F7FF;
+    width: 500px;
+    height: 350px;
+    margin-top: 50px;
+    border-radius: 20px;
+    overflow:auto;
+}
+.login-left {
+    margin-left: 150px;
+}
+.login-right{
+    margin-left: 50px;
+}
+form, h5, p, ul{
+    width: 80%;
+    margin: auto;
+    margin-top: 10px;
+}
+center{
+    display: flex;
+}
+.login-left a{
+    margin: auto 10px;
+}
+.login-right a {
+    margin-left: 50px;
+    margin-top: 30px;
+}
+.login-left button{
+    width: 20vh;
+}
+input, label{
+    margin: 3px auto;
+}
+h5{
+    margin-top: 20px;
+}

@@ -35,7 +35,6 @@ var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<AppD
 context.Database.EnsureCreated();
 
 
-
 app.UseStaticFiles();
 
 app.UseRouting();
