@@ -14,12 +14,12 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(buil
 builder.Services.AddDefaultIdentity<User>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
-    options.Password.RequireDigit = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequiredLength = 8;
-    options.User.RequireUniqueEmail = true;
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric =false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequiredLength = 4;
+    options.User.RequireUniqueEmail = false;
 
 }).AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddControllersWithViews();
@@ -33,6 +33,7 @@ if (!app.Environment.IsDevelopment())
 }
 var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
 context.Database.EnsureCreated();
+//context.Database.EnsureDeleted();
 
 
 app.UseStaticFiles();

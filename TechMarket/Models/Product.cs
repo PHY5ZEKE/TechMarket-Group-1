@@ -13,7 +13,7 @@ namespace TechMarket.Models
         public int ProdId { get; set; }
         public Guid AcctId { get; set; }
         public string Seller { get; set; }
-        [Required]
+
         [NotMapped]
         public IFormFile ProdImage { get; set; }
         public string ProdName { get; set; }
@@ -21,6 +21,8 @@ namespace TechMarket.Models
         public ProdTags ProdTags { get; set; }
         public int ProdQuantity { get; set; }
         public string ProdPrice { get; set; }
+
+        public string ProdImageURL { get; set; }
        
     }
 }

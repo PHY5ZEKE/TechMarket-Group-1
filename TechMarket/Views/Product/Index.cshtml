@@ -8,43 +8,39 @@
 <center><a class="btn btn-primary" asp-action="AddProduct">Add Product</a></center>
 <br />
 
-<table class="table">
-    <tr>
-        <th>Product Id</th>
-        <th>Account Id</th>
-        <th>Seller</th>
-        <th>Image</th>
-        <th>Product Name</th>
-        <th>Product Description</th>
-        <th>Tag</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Show Details</th>
-        <th>Update</th>
-        <th>Delete</th>
-    </tr>
 
-    @foreach (var Product in Model)
+
+<div class="row">
+    @foreach (var product in Model)
     {
-        <tr>
-            <td>@Product.ProdId</td>
-            <td>@Product.AcctId</td>
-            <td>@Product.Seller</td>
-            <td>@Product.ProdImage</td>
-            <td>@Product.ProdName</td>
-            <td>@Product.ProdDesc</td>
-            <td>@Product.ProdTags</td>
-            <td>@Product.ProdQuantity</td>
-            <td>@Product.ProdPrice</td>
-            <td>
-                <center><a class="btn btn-primary" asp-action="ShowDetails" asp-route-id="@Product.ProdId">Show Details</a></center>
-            </td>
-            <td>
-                <center><a class="btn btn-primary" asp-action="EditProduct" asp-route-id="@Product.ProdId">Edit</a></center>
-            </td>
-            <td>
-                <center><a class="btn btn-danger" asp-action="DeleteProduct" asp-route-id="@Product.ProdId">Delete</a></center>
-            </td>
-        </tr>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="~/@product.ProdImageURL" class="img-thumbnail" />
+                <div class="card-body">
+                    <h3 class="card-title">@product.ProdName</h3>
+                    <p class="card-text">@product.ProdDesc</p>
+                    <h2>@product.ProdTags</h2>
+                    <h2>@product.ProdQuantity</h2>
+                    <h2>@product.ProdPrice</h2>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a class="btn btn-primary" asp-action="ShowDetails" asp-route-id="@product.ProdId">Show Details</a>
+                            <a class="btn btn-primary" asp-action="EditProduct" asp-route-id="@product.ProdId">Edit</a>
+                            <a class="btn btn-danger" asp-action="DeleteProduct" asp-route-id="@product.ProdId">Delete</a>
+                        </div>
+                        <small class="text-muted">@product.Seller</small>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
-</table>
+</div>
+       
+            
+            
+
+
+
+            
+    }
+

@@ -53,14 +53,15 @@ namespace TechMarket.Controllers
                 // Set the user ID and username for the new product
                 newProduct.AcctId = Guid.Parse(user.Id);
                 newProduct.Seller = user.UserName;
-
-                if(newProduct.ProdImage!=null)
+           
+                if (newProduct.ProdImage!=null)
                 {
-                    string folder = "products";
-                    folder += Guid.NewGuid().ToString()+"_"+newProduct.ProdImage.FileName;
-                    string serverFolder =Path.Combine(_webHostEnvironment.WebRootPath,folder);
+                    string folder = "products/image/";
+                    folder += Guid.NewGuid().ToString() + "_" + newProduct.ProdImage.FileName;
+                    newProduct.ProdImageURL = folder;
+                    string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
 
-                   await newProduct.ProdImage.CopyToAsync(new FileStream(serverFolder,FileMode.Create));
+                    await newProduct.ProdImage.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
                 }
                 // Add the product to the database
                 _dbContext.Products.Add(newProduct);
