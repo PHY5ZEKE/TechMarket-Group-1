@@ -1,7 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model Account ;
+@model TechMarket.Data.User
 
 <h1>Account Details</h1>
 
@@ -20,11 +20,15 @@
     </tr>
     <tr>
         <th>Username</th>
-        <td>@Model.Username</td>
+        <td>@Model.UserName</td>
     </tr>
     <tr>
         <th>Birthday</th>
         <td>@Model.Birthday</td>
+    </tr>
+    <tr>
+        <th>Birthday</th>
+        <td>@Model.Address</td>
     </tr>
     <tr>
         <th>Contact</th>

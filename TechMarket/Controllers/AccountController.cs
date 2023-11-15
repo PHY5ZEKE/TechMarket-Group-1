@@ -51,15 +51,16 @@ namespace TechMarket.Controllers
             var users = _userManager.Users.ToList();
             return View(users);
         }
-        public IActionResult ShowDetails(int id)
+        public IActionResult ShowDetails(Guid id)
         {
 
-            Account? account = _dbContext.Accounts.FirstOrDefault(st => st.AcctId == id);
+            User? user = _userManager.Users.FirstOrDefault(u => u.Id == id.ToString());
 
-            if (account != null)
+            if (user != null)
             {
-                return View(account);
+                return View(user);
             }
+
             return NotFound();
         }
         [HttpGet]
@@ -79,6 +80,8 @@ namespace TechMarket.Controllers
                 newUser.Email = userEnteredData.Email;
                 newUser.PhoneNumber = userEnteredData.Phone;
                 newUser.Birthday = userEnteredData.Birthday;
+                newUser.Address = userEnteredData.Address;
+                newUser.Phone = userEnteredData.Phone;
 
                 var result = await _userManager.CreateAsync(newUser, userEnteredData.Password);
 
@@ -101,66 +104,106 @@ namespace TechMarket.Controllers
 
 
 
-        public IActionResult EditAccount(int id)
+        public IActionResult EditAccount(Guid id)
         {
 
-            Account? account = _dbContext.Accounts.FirstOrDefault(st => st.AcctId == id);
+            User? user = _userManager.Users.FirstOrDefault(u => u.Id == id.ToString());
 
-            if (account != null)
+            if (user != null)
             {
-                return View(account);
+                return View(user);
             }
             return NotFound();
         }
         [HttpPost]
-        public IActionResult EditAccount(Account updateAccount)
+        public IActionResult EditAccount(User updateAccount)
         {
+            // Get the user by Id
+          User user = _userManager.FindByIdAsync(updateAccount.Id).Result;
 
-            Account? account = _dbContext.Accounts.FirstOrDefault(st => st.AcctId == updateAccount.AcctId);
-
-            if (account != null)
+            if (user != null)
             {
-                account.AcctId = updateAccount.AcctId;
-                account.FirstName = updateAccount.FirstName;
-                account.LastName = updateAccount.LastName;
-                account.Email = updateAccount.Email;
-                account.Username = updateAccount.Username;
-                account.Password = updateAccount.Password;
-                account.Address = updateAccount.Address;
-                account.Birthday = updateAccount.Birthday;
-                account.Phone = updateAccount.Phone;
+                // Update user properties
+                user.FirstName = updateAccount.FirstName;
+                user.LastName = updateAccount.LastName;
+                user.Email = updateAccount.Email;
+                user.UserName = updateAccount.UserName;
+                user.Address = updateAccount.Address;
+                user.Birthday = updateAccount.Birthday;
+                user.Phone = updateAccount.Phone;
+
+
+                // You may need to update other properties as needed
+
+                // Update the user using UserManager
+                var result = _userManager.UpdateAsync(user).Result;
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    // Handle the case where the update failed
+                    ModelState.AddModelError(string.Empty, "Error updating user information.");
+                    return View(updateAccount);
+                }
             }
-            _dbContext.SaveChanges();
-            return RedirectToAction("Index");
+
+            return NotFound();
         }
 
         [HttpGet]
-        public IActionResult DeleteAccount(int id)
+        public IActionResult DeleteAccount(Guid id)
         {
-            Account? account = _dbContext.Accounts.FirstOrDefault(st => st.AcctId == id);
+            User? user = _userManager.Users.FirstOrDefault(u => u.Id == id.ToString());
 
-            if (account != null)
+            if (user != null)
             {
-                return View(account);
+                return View(user);
             }
-
             return NotFound();
 
         }
         [HttpPost]
-        public IActionResult DeleteAccount(Account delAccount)
+        public IActionResult DeleteAccount(string id)
         {
-            Account? account = _dbContext.Accounts.FirstOrDefault(st => st.AcctId == delAccount.AcctId);
-            _dbContext.Accounts.Remove(account);
-            _dbContext.SaveChanges();
-            return RedirectToAction("Index");
+            User user = _userManager.FindByIdAsync(id).Result;
 
+            if (user != null)
+            {
+                // Use UserManager to delete the user
+                var result = _userManager.DeleteAsync(user).Result;
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    // Handle the case where the deletion failed
+                    ModelState.AddModelError(string.Empty, "Error deleting user.");
+                    return View("Index"); // You might want to display an error message or redirect to a different view
+                }
+            }
+
+            return NotFound();
         }
-        
+
+
+
+
+
+        // Existing code...
 
 
     }
 
+
+
+
 }
+
+
 
 
