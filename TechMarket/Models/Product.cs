@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TechMarket.Models
 {
@@ -10,9 +11,11 @@ namespace TechMarket.Models
     {
         [Key]
         public int ProdId { get; set; }
-        public int AcctId { get; set; }
-        public string Username { get; set; }
-        public string ProdImage { get; set; }
+        public Guid AcctId { get; set; }
+        public string Seller { get; set; }
+        [Required]
+        [NotMapped]
+        public IFormFile ProdImage { get; set; }
         public string ProdName { get; set; }
         public string ProdDesc { get; set; }
         public ProdTags ProdTags { get; set; }

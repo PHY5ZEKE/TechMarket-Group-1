@@ -16,4 +16,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.12" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\products\" />
+  </ItemGroup>
+
 </Project>
