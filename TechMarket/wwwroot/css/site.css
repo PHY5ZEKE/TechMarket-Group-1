@@ -1,5 +1,5 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
@@ -17,11 +17,24 @@ body {
   margin-bottom: 60px;
 }
 
-img {
-  height: 15%;
-  width: 15%
-}
+
 
 .container-fluid {
   background-color: #000C38;
+}
+custom-navbar {
+    background-color: #000C38;
+}
+
+.custom-navbar .navbar-nav .nav-link {
+    color: white !important;
+}
+
+.custom-navbar .navbar-toggler-icon {
+    background-color: white; 
+}
+
+a.navbar-brand img {
+    height: 85px;
+    width:90px;
 }

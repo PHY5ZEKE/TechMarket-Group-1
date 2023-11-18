@@ -1,0 +1,8 @@
+﻿body {
+
+}
+
+.img-thumbnail.img-fluid {
+    object-fit: cover;
+    height: 200px;
+}
