@@ -16,3 +16,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+img {
+  height: 15%;
+  width: 15%
+}
+
+.container-fluid {
+  background-color: #000C38;
+}
