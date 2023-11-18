@@ -54,23 +54,20 @@ body {
 }
 
 /*Right*/
-.listing_right label{
-    font-weight: bold;
-    margin-top: 3px;
-    margin-bottom: 2px;
-}
-.listing_right button{
-    width: 48%;
+.listing_right button {
+    width: calc(50% - 5px); /* Adjusted width to allow for margin */
     border-radius: 10px;
     height: 35px;
 }
-.submit_button{
+
+.submit_button {
     background-color: #FDC500;
     font-weight: bold;
 }
-.cancel_button{
+
+.cancel_button {
     background-color: #001459;
     color: #FFF;
     font-weight: bold;
-    margin-left: 10px;
+    margin-left: 5px; /* Adjusted margin */
 }

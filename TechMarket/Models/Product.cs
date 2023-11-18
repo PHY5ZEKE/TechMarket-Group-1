@@ -20,7 +20,7 @@ namespace TechMarket.Models
         public string ProdDesc { get; set; }
         public ProdTags ProdTags { get; set; }
         public int ProdQuantity { get; set; }
-        public string ProdPrice { get; set; }
+        public int ProdPrice { get; set; }
 
         public string ProdImageURL { get; set; }
        
