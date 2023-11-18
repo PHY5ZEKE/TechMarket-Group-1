@@ -1,0 +1,57 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Product
+
+<h1>Edit Product</h1>
+
+<form asp-action="EditProduct" enctype="multipart/form-data" method="post">
+
+    <div class="form-group" hidden>
+        <label asp-for="ProdId" hidden>ID</label>
+        <input asp-for="ProdId" class="form-control" hidden />
+
+    </div>
+    
+    <div>
+        <img src="~/@Model.ProdImageURL" class="img-thumbnail img-fluid" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ProdImage" class="control-label"></label>
+        <input type="file" name="newImage" class="form-control" />
+        <span asp-validation-for="ProdImage" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProdName">Name</label>
+        <input asp-for="ProdName" class="form-control"  />
+    </div>
+    <div class="form-group">
+        <label asp-for="ProdDesc">Description</label>
+        <input asp-for="ProdDesc" class="form-control"  />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ProdTags">Category</label>
+        <select asp-for="ProdTags" asp-items="Html.GetEnumSelectList(typeof(ProdTags))" class="form-control" disabled><option disabled selected>Select Rank</option></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ProdQuantity">Quantity</label>
+        <input asp-for="ProdQuantity" class="form-control"  />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ProdPrice">Price</label>
+        <input asp-for="ProdPrice" class="form-control"  />
+    </div>
+
+
+
+    <br />
+    <div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" onclick="history.back();">Cancel</button>
+    </div>
+</form>

@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\products\image\" />
+    <Folder Include="wwwroot\register\id\" />
+    <Folder Include="wwwroot\register\pfp\" />
   </ItemGroup>
 
 </Project>

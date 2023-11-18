@@ -33,7 +33,7 @@ if (!app.Environment.IsDevelopment())
 }
 var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
 context.Database.EnsureCreated();
-//context.Database.EnsureDeleted();
+
 
 
 app.UseStaticFiles();

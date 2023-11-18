@@ -87,31 +87,54 @@ namespace TechMarket.Controllers
             return NotFound();
         }
         [HttpPost]
-        public IActionResult EditProduct(Product updateProduct)
+        public IActionResult EditProduct(Product updateProduct, IFormFile newImage)
         {
-
-           Product? product = _dbContext.Products.FirstOrDefault(st => st.ProdId == updateProduct.ProdId);
+            Product? product = _dbContext.Products.FirstOrDefault(st => st.ProdId == updateProduct.ProdId);
 
             if (product != null)
             {
-                    product.ProdId = updateProduct.ProdId;
-                   
-      
-                    product.ProdImage = updateProduct.ProdImage;
-                    product.ProdName = updateProduct.ProdName;
-                    product.ProdDesc = updateProduct.ProdDesc;
-                    product.ProdTags = updateProduct.ProdTags;
-                    product.ProdQuantity = updateProduct.ProdQuantity;
-                    product.ProdPrice = updateProduct.ProdPrice;
+                // Update other properties
+                product.ProdName = updateProduct.ProdName;
+                product.ProdDesc = updateProduct.ProdDesc;
+                product.ProdTags = updateProduct.ProdTags;
+                product.ProdQuantity = updateProduct.ProdQuantity;
+                product.ProdPrice = updateProduct.ProdPrice;
+
+                // Update image if a new one is provided
+                if (newImage != null)
+                {
+                    // Delete the old image if it exists
+                    if (!string.IsNullOrEmpty(product.ProdImageURL))
+                    {
+                        string oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, product.ProdImageURL);
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    // Save the new image
+                    string folder = "products/image/";
+                    folder += Guid.NewGuid().ToString() + "_" + newImage.FileName;
+                    product.ProdImageURL = folder;
+                    string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
+
+                    using (var stream = new FileStream(serverFolder, FileMode.Create))
+                    {
+                        newImage.CopyTo(stream);
+                    }
+                }
             }
+
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
         }
 
+
         [HttpGet]
         public IActionResult DeleteProduct(int id)
         {
-            Product? product = _dbContext.Products.FirstOrDefault(st => st.ProdId == id);
+            Product product = _dbContext.Products.FirstOrDefault(p => p.ProdId == id);
 
             if (product != null)
             {
@@ -119,16 +142,16 @@ namespace TechMarket.Controllers
             }
 
             return NotFound();
-
         }
+
         [HttpPost]
         public IActionResult DeleteProduct(Product delProduct)
         {
-            Product? product= _dbContext.Products.FirstOrDefault(st => st.ProdId == delProduct.ProdId);
+            Product? product = _dbContext.Products.FirstOrDefault(p => p.ProdId == delProduct.ProdId);
             _dbContext.Products.Remove(product);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
-
         }
+
     }
 }
