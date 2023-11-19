@@ -4,6 +4,7 @@ using TechMarket.Data;
 using TechMarket.Models;
 using TechMarket.ViewModels;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TechMarket.Controllers
 {
@@ -12,6 +13,7 @@ namespace TechMarket.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly AppDbContext _dbContext;
+
         public AccountController(SignInManager<User> signInManager, AppDbContext dbContext, UserManager<User> userManager)
         {
             _signInManager = signInManager;
@@ -22,24 +24,40 @@ namespace TechMarket.Controllers
         {
             return View();
         }
+     
+        
+        public IActionResult Profile()
+        {
+
+           
+            return View("Profile");
+        }
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginInfo)
         {
             var result = await _signInManager.PasswordSignInAsync(loginInfo.UserName, loginInfo.Password, loginInfo.RememberMe, false);
-            ;
 
             if (result.Succeeded)
             {
+
+
+                // Check if the user is authenticated
+
+            
                 return RedirectToAction("Index", "Product");
             }
             else
             {
                 ModelState.AddModelError("", "Failed to Login");
             }
-
+            var products = _dbContext.Products.ToList();
             return View(loginInfo);
         }
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -189,6 +207,11 @@ namespace TechMarket.Controllers
 
             return NotFound();
         }
+        
+
+
+
+
 
 
 

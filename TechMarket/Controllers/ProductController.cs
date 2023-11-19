@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Http; 
 using TechMarket.Data;
 using TechMarket.Models;
 
@@ -11,6 +11,7 @@ namespace TechMarket.Controllers
         private readonly AppDbContext _dbContext;
         private readonly UserManager<User> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private const string UserProductsSessionKey = "UserProducts";
 
         public ProductController(AppDbContext dbContext, UserManager<User> userManager, IWebHostEnvironment webHostEnvironment)
         {
@@ -21,7 +22,22 @@ namespace TechMarket.Controllers
 
         public IActionResult Index()
         {
-            
+            if (User.Identity.IsAuthenticated)
+            {
+                // Retrieve the user from the UserManager
+                var loggedInUser = _userManager.GetUserAsync(User).Result;
+
+                // Store user information in session
+                HttpContext.Session.SetString("UserName", loggedInUser.UserName);
+                HttpContext.Session.SetString("Address", loggedInUser.Address);
+                HttpContext.Session.SetString("FirstName", loggedInUser.FirstName);
+                HttpContext.Session.SetString("LastName", loggedInUser.LastName);
+                HttpContext.Session.SetString("Email", loggedInUser.Email);
+
+                
+            }
+        
+    
             return View(_dbContext.Products);
         }
         public IActionResult ShowDetails(int id)
@@ -153,5 +169,15 @@ namespace TechMarket.Controllers
             return RedirectToAction("Index");
         }
 
+      
+
+       
+
+
     }
+
+   
+
 }
+
+
