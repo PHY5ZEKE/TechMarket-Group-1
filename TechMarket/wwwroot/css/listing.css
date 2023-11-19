@@ -54,7 +54,7 @@ body {
 }
 
 /*Right*/
-.listing_right button {
+button{
     width: calc(50% - 5px); /* Adjusted width to allow for margin */
     border-radius: 10px;
     height: 35px;
