@@ -70,8 +70,8 @@
                 </button>
                 <div class="dropdown-container">
                     <a asp-area="" asp-action="Profile" asp-controller="Account"> Profile</a>
-                    <a href="#">My Listings</a>
-                    <a href="#">My Purchases</a>
+                    <a asp-controller="Product" asp-action="Listing">My Listings</a>
+                    <a asp-action="Purchases" asp-controller="Product">My Purchases</a>
                     <a href="#">To Receive</a>
                     <a href="#">To Ship</a>
                 </div>
@@ -88,11 +88,11 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+   @*  <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2023 - TechMarket - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

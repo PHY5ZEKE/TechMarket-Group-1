@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TechMarket.Data;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,7 @@ if (!app.Environment.IsDevelopment())
 }
 var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
 context.Database.EnsureCreated();
-//context.Database.EnsureDeleted();
+
 
 
 
@@ -42,6 +43,8 @@ context.Database.EnsureCreated();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 app.UseAuthorization();
 

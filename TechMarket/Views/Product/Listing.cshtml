@@ -1,0 +1,40 @@
+﻿
+
+<h2>User Products</h2>
+
+
+<div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th>Tags</th>
+                   @*  <th>Quantity</th> *@
+                    <th>Price</th>
+                     <th>Edit</th>
+                     <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="~/@product.ProdImageURL" alt="@product.ProdName" class="img-thumbnail" style="max-width: 100px; max-height: 100px;" />
+                        </td>
+                        <td>@product.ProdName</td>
+                        <td>@product.ProdDesc</td>
+                        <td>@product.ProdTags</td>
+                        @* <td>@product.ProdQuantity</td> *@
+                        <td>@product.ProdPrice</td>
+
+                    <td>   <center><a class="btn btn-primary" asp-action="EditProduct" asp-route-id="@product.ProdId">Edit</a></center></td>
+                    <td> <center>  <a class="btn btn-danger" asp-action="DeleteProduct" asp-route-id="@product.ProdId">Delete</a></center></td>
+                    
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
