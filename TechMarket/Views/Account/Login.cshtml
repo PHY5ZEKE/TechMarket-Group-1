@@ -6,31 +6,45 @@
 @{
     String label = "If you have an account, sign in with your email address.";
 }
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
 
-<center>
+    .login-container {
+        margin-right: 200px;
+    }
+
+    .login-center {
+        text-align: center;
+    }
+</style>
+
 <div class="login-container">
-        <div class="login-center">
-            <h1>Customer Login</h1>
-            <h5>Registered Customers</h5>
-            <p>@label</p>
-            <p></p>
-            <form asp-action="Login" method="post">
-                <div class="form-group">
-                    <label asp-for="UserName">Username</label>
-                    <input asp-for="UserName" placeholder="Your Username" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password">Password</label>
-                    <input asp-for="Password" type="password" placeholder="Your Password" class="form-control" />
-                </div>
-                <br />
-                <center>
-                    <div>
-                        <button type="submit" class="btn btn-primary rounded-pill">Login</button>
-                    </div>
-                        <p>Don't Have an Account?<a asp-controller="Account" asp-action="Register"> <span style="color:blue">Register now!</span></a></p>
-                </center>
-            </form>
-        </div>
+    <div class="login-center">
+        <h1>Customer Login</h1>
+        <h5>Registered Customers</h5>
+        <p>@label</p>
+        <p></p>
+        <form asp-action="Login" method="post">
+            <div class="form-group">
+                <label asp-for="UserName">Username</label>
+                <input asp-for="UserName" placeholder="Your Username" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" type="password" placeholder="Your Password" class="form-control" />
+            </div>
+            <br />
+            <div>
+                <button type="submit" class="btn btn-primary rounded-pill">Login</button>
+            </div>
+            <p>Don't Have an Account?<a asp-controller="Account" asp-action="Register"> <span style="color:blue">Register now!</span></a></p>
+        </form>
     </div>
-</center>
+</div>
