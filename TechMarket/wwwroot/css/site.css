@@ -1,11 +1,85 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+
 html {
     font-size: 14px;
+    font-family: 'Poppins';
 }
 
 @media (min-width: 768px) {
     html {
         font-size: 16px;
     }
+}
+body {
+    font-family: 'Poppins';
+    overflow: hidden;
+}
+/* Home Page CSS */
+.text-center {
+    text-align: center; /* Center-align the container */
+    height: auto;
+    background: #F5F7FF;
+    border-radius:20px;
+}
+
+.intro {
+    position: relative;
+    margin-bottom: 1%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 40px;
+    padding-right: 40px;
+    background: url('~/BG1.png') no-repeat center center;
+    background-size: cover;
+}
+
+.heading {
+    font-family: 'Poppins';
+    font-weight: bolder;
+    font-size: 10em;
+    margin-top: 20px;
+    color: #3853A1;
+}
+
+.left-side {
+    flex: 1;
+    padding-left: 40px;
+    text-align: left; /* Right-align the content */
+}
+
+.right-side {
+    flex: 1;
+    text-align: center;
+}
+
+.logo {
+    max-width: 100%;
+    height: auto;
+    margin: 50px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #a0e0f4;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: black;
+    font-size: 14px;
+    width: 200px;
+}
+
+    .btn:hover {
+        background-color: #1e88e5;
+        color: white;
+    }
+
+.button-container {
+    margin-top: 20px; /* Adjusted margin-top for better spacing */
 }
 
 html {

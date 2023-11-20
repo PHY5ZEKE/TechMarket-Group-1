@@ -3,6 +3,17 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <section class="intro">
+        <div class="left-side">
+            <h1 class="heading">Tech <br/>Market</h1>
+            <p>TechMarket is a dynamic online platform where technology enthusiasts and consumers converge to seamlessly buy and sell a diverse array of cutting-edge gadgets, electronics, and tech accessories.</p>
+            <div class="button-container">
+                <a asp-controller="Account" asp-action="Login" class="btn btn-primary rounded-pill">Login now!</a>
+            </div>
+        </div>
+        <div class="right-side">
+            <img class="logo" src="~/logo.png" alt="Logo">
+        </div>
+    </section>
 </div>
+
