@@ -3,38 +3,153 @@ html {
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-top: 150px;
+    margin-bottom: 60px;
 }
-
-
 
 .container-fluid {
-  background-color: #000C38;
-}
-custom-navbar {
     background-color: #000C38;
 }
 
-.custom-navbar .navbar-nav .nav-link {
-    color: white !important;
+.custom-navbar {
+    background-color: #000C38;
 }
 
-.custom-navbar .navbar-toggler-icon {
-    background-color: white; 
-}
+    .custom-navbar .navbar-nav .nav-link {
+        color: white !important;
+    }
+
+    .custom-navbar .navbar-toggler-icon {
+        background-color: white;
+    }
 
 a.navbar-brand img {
     height: 85px;
-    width:90px;
+    width: 90px;
+}
+
+.sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    
+    top: 100px; /* Adjusted top position to avoid overlapping the top navbar */
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+    /* Style the sidenav links and the dropdown button */
+    .sidenav a, .dropdown-btn {
+        padding: 6px 8px 6px 16px;
+        text-decoration: none;
+        font-size: 20px;
+        color: #818181;
+        display: block;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+        outline: none;
+    }
+
+        /* On mouse-over */
+        .sidenav a:hover, .dropdown-btn:hover {
+            color: #f1f1f1;
+        }
+
+/* Main content */
+.main {
+    margin-left: 200px; /* Same as the width of the sidenav */
+    margin-top: 60px; /* Adjusted margin-top to avoid overlapping the top navbar */
+    font-size: 20px; /* Increased text to enable scrolling */
+    padding: 0px 10px;
+}
+
+/* Add an active class to the active dropdown button */
+.active {
+    background-color: green;
+    color: white;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+    display: none;
+    background-color: #262626;
+    padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+    float: right;
+    padding-right: 8px;
+}
+/* Add this CSS to your existing stylesheet */
+..custom-sidenav {
+    background-color: #f8f9fa; /* Set your desired background color */
+    border: 1px solid #dee2e6; /* Set your desired border color */
+    margin-top: 60px; /* Adjusted margin-top to create space for the fixed top navbar */
+    z-index: 1000; /* Set a higher z-index to ensure it appears above other elements */
+}
+
+.custom-sidenav .navbar-nav .nav-link {
+    color: #495057; /* Set your desired text color */
+}
+
+    .custom-sidenav .navbar-nav .nav-link:hover {
+        background-color: #e2e6ea; /* Set your desired hover background color */
+    }
+
+.custom-sidenav .navbar-nav .nav-item {
+    border-bottom: 1px solid #dee2e6; /* Set your desired border color for nav items */
+}
+
+    .custom-sidenav .navbar-nav .nav-item:last-child {
+        border-bottom: none; /* Remove border for the last nav item */
+    }
+
+.custom-sidenav .navbar-nav .collapse {
+    padding-left: 15px; /* Set your desired padding for the dropdown items */
+}
+
+/* Adjusted styles for the top navbar */
+.custom-navbar {
+    background-color: #000C38;
+    position: fixed; /* Ensure the navbar stays fixed at the top */
+    width: 100%; /* Take up the full width of the viewport */
+    z-index: 999; /* Set a lower z-index to appear below the side navbar */
+}
+
+    .custom-navbar .navbar-nav .nav-link {
+        color: white !important;
+    }
+
+    .custom-navbar .navbar-toggler-icon {
+        background-color: white;
+    }
+
+a.navbar-brand img {
+    height: 85px;
+    width: 90px;
+}
+
+/* Adjusted styles for the main content */
+.main {
+    margin-left: 200px; /* Same as the width of the sidenav */
+    margin-top: 120px; /* Adjusted margin-top for more space between the top navbar and content */
+    font-size: 20px;
+    padding: 0px 10px;
 }

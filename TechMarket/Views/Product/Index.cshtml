@@ -8,11 +8,14 @@
     <!--css-->
     <link rel="stylesheet" href="~/css/product.css" asp-append-version="true" />
 </head>
-<h1>Products</h1>
-<center><a class="btn btn-primary" asp-action="AddProduct">Add Product</a></center>
+
+
 <br />
 
 <link rel="stylesheet" href="~/css/product.css">
+
+
+
 
 <div class="row">
     @foreach (var product in Model)
@@ -25,7 +28,7 @@
                     <h3 class="card-title">@product.ProdName</h3>
                     <p class="card-text">@product.ProdDesc</p>
                     <h2>@product.ProdTags</h2>
-                    <h2>@product.ProdQuantity</h2>
+                  @*   <h2>@product.ProdQuantity</h2> *@
                     <h2>@product.ProdPrice</h2>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">

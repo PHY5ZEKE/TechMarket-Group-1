@@ -1,0 +1,10 @@
+﻿<h1>Your Purchases</h1>
+
+@foreach (var purchase in Model)
+{
+    <div>
+       @*  <h3>@purchase.Product.ProdName</h3> *@
+        <p>Purchase Date: @purchase.PurchaseDate</p>
+        <!-- Add other product details as needed -->
+    </div>
+}

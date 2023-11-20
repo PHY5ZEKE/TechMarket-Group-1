@@ -35,10 +35,10 @@
                         <label asp-for="ProdDesc">Description</label>
                         <input asp-for="ProdDesc" class="form-control" />
                     </div>
-                    <div class="form-group">
+                   @*  <div class="form-group">
                         <label asp-for="ProdQuantity">Quantity</label>
                         <input asp-for="ProdQuantity" class="form-control" />
-                    </div>
+                    </div> *@
                     <div class="form-group">
                         <label asp-for="ProdTags">Category</label>
                         <select asp-for="ProdTags" asp-items="Html.GetEnumSelectList(typeof(ProdTags))" class="form-control"><option disabled selected>Select Tag</option></select>

@@ -30,12 +30,14 @@
         <th>Tags</th>
         <td>@Model.ProdTags</td>
     </tr>
-    <tr>
+    @* <tr>
         <th>Quantity</th>
         <td>@Model.ProdQuantity</td>
-    </tr>
+    </tr> *@
     <tr>
         <th>Price</th>
         <td>@Model.ProdPrice</td>
     </tr>
 </table>
+
+<a asp-action="Checkout" asp-controller="Product" value="Checkout" class="btn btn-warning">Proceed to Checkout</a>

@@ -9,6 +9,7 @@ namespace TechMarket.Data
         
             
             public DbSet<Product> Products { get; set; }
+        public DbSet<Purchases> PurchasedProducts { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
