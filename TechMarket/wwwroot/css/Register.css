@@ -1,81 +1,90 @@
 ﻿.wrapper {
     position: relative;
-    max-width: 430px;
+    max-width: 700px;
     width: 100%;
-    background: #fff;
+    background: #F5F7FF;
     padding: 34px;
     border-radius: 6px;
-    left: 35%;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    margin: 0 auto;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
-    .wrapper h2 {
-        position: relative;
-        font-size: 22px;
+    .wrapper h1 {
+        font-size: 28px;
         font-weight: 600;
         color: #333;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
-
 
     .wrapper form {
         margin-top: 30px;
     }
 
         .wrapper form .input-box {
-            height: 52px;
-            margin: 18px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
-form .input-box input {
-    height: 100%;
-    width: 100%;
-    outline: none;
-    padding: 0 15px;
-    font-size: 17px;
-    font-weight: 400;
-    color: #333;
-    border: 1.5px solid #C7BEBE;
-    border-bottom-width: 2.5px;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-}
+            .wrapper form .input-box .input-group {
+                flex: 1;
+            }
 
-.input-box input:focus,
-.input-box input:valid {
-    border-color: #4070f4;
-}
+            .wrapper form .input-box label {
+                display: block;
+                margin-bottom: 5px;
+                color: #333;
+            }
 
+            .wrapper form .input-box input {
+                width: 100%;
+                padding: 10px;
+                border: 1.5px solid #C7BEBE;
+                border-radius: 10px;
+                transition: border-color 0.3s ease;
+            }
 
-form h3 {
-    color: #707070;
-    font-size: 14px;
-    font-weight: 500;
-    margin-left: 10px;
-}
+                .wrapper form .input-box input:focus,
+                .wrapper form .input-box input:valid {
+                    border-color: #4070f4;
+                }
 
-.input-box.button input {
-    color: #fff;
-    letter-spacing: 1px;
-    border: none;
-    background: #4070f4;
-    cursor: pointer;
-}
+            .wrapper form .input-box.button {
+                width: 100%;
+                margin-top: 10px;
+            }
 
-    .input-box.button input:hover {
-        background: #0e4bf1;
-    }
+                .wrapper form .input-box.button input {
+                    color: #fff;
+                    letter-spacing: 1px;
+                    border: none;
+                    background: #4070f4;
+                    cursor: pointer;
+                }
 
-form .text h3 {
-    color: #333;
-    width: 100%;
-    text-align: center;
-}
+                    .wrapper form .input-box.button input:hover {
+                        background: #0e4bf1;
+                    }
 
-    form .text h3 a {
-        color: #4070f4;
-        text-decoration: none;
-    }
-
-        form .text h3 a:hover {
-            text-decoration: underline;
+        .wrapper form .text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
         }
+
+            .wrapper form .text p {
+                color: #333;
+            }
+
+                .wrapper form .text p a {
+                    color: #4070f4;
+                    text-decoration: none;
+                }
+
+                    .wrapper form .text p a:hover {
+                        text-decoration: underline;
+                    }

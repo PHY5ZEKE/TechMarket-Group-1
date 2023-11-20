@@ -13,14 +13,15 @@ html {
 }
 body {
     font-family: 'Poppins';
-    overflow: hidden;
+    
 }
 /* Home Page CSS */
 .text-center {
-    text-align: center; /* Center-align the container */
+    overflow: hidden;
+    text-align: center; 
     height: auto;
     background: #F5F7FF;
-    border-radius:20px;
+    border-radius: 20px;
 }
 
 .intro {
@@ -46,7 +47,7 @@ body {
 .left-side {
     flex: 1;
     padding-left: 40px;
-    text-align: left; /* Right-align the content */
+    text-align: left;
 }
 
 .right-side {

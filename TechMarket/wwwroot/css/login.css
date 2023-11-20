@@ -41,9 +41,10 @@ ul {
     margin: auto;
 }
 
-.login-center a {
+p {
     margin: auto 10px;
     font-size: 12px;
+    white-space: nowrap;
 }
 
 .login-center button {
