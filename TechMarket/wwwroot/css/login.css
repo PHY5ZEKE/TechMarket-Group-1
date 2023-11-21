@@ -1,54 +1,65 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Poppins');
-body{
-    font-family: 'Poppins';
-}
-h1{
-    font-weight: bolder;
-    margin-top: 30px;
-}
-h5, label{
-    font-weight: bold;
-}
-.login-container{
-    display: flex;
-    margin-top: -20px;
-}
-.login-left, .login-right {
-    background-color: #F5F7FF;
-    width: 500px;
-    height: 350px;
-    margin-top: 50px;
-    border-radius: 20px;
-    overflow:auto;
-}
-.login-left {
-    margin-left: 150px;
-}
-.login-right{
-    margin-left: 50px;
-}
-form, h5, p, ul{
-    width: 80%;
-    margin: auto;
-    margin-top: 10px;
-}
-center{
-    display: flex;
-}
-.login-left a{
-    margin: auto 10px;
-}
-.login-right a {
-    margin-left: 50px;
-    margin-top: 30px;
-}
-.login-left button{
-    width: 20vh;
-}
-input, label{
-    margin: 3px auto;
-}
-h5{
-    margin-top: 20px;
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
 }
 
+h1 {
+    font-weight: bolder;
+    margin-bottom: 50px;
+}
+
+p.single-line {
+    white-space: nowrap;
+}
+
+h5,
+label {
+    font-weight: bold;
+    margin: 20px;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F5F7FF;
+    width: 80%;
+    max-width: 700px;
+    height: 550px;
+    border-radius: 20px;
+    overflow: auto;
+    margin-top: 100px;
+    margin-left:275px;
+    padding: 20px;
+}
+
+form,
+h5,
+p,
+ul {
+    width: 80%;
+    margin: auto;
+}
+
+p {
+    margin: 10px auto; /* Adjusted margin for spacing */
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.login-center button {
+    margin: 20px 0; /* Adjusted margin for spacing */
+    width: 20vh;
+}
+
+input,
+label {
+    margin: 3px auto;
+}
+
+h5 {
+    margin-top: 20px;
+}

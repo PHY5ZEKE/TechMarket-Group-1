@@ -1,49 +1,50 @@
 ﻿@model TechMarket.ViewModels.LoginViewModel;
 
-<link rel="stylesheet" href = "~/css/login.css" asp-append-version = "true"/>
-<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-@{
-    String label = "If you have an account sign in with your email address.";
-    String benefit1 = "Check out faster";
-    String benefit2 = "Keep more than one address";
-    String benefit3 = "Track orders and more";
-}
+<link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 
-<h1>Customer Login</h1>
-    <div class = "login-container">
-        <div class="login-left">
-            <h5>Registered Customers</h5>
-            <p>@label</p>
-            <p></p>
-            <form asp-action="Login" method="post">
-                <div class="form-group">
-                    <label asp-for="UserName">Username</label>
-                    <input asp-for="UserName" placeholder= "Your Username"
-                           class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password">Password</label>
-                    <input asp-for="Password" type="password" placeholder= "Your Password"
-                           class="form-control" />
-                </div>
-                <br />
-                <center>
-                    <div>
-                        <button type="submit"class="btn btn-primary rounded-pill"> Login</button>
-        
-                    </div>
-                    <a asp-controller="Account" asp-action="Register">Forgot Your Password?</a> <!-- To be Changed -->
-                </center>
-            </form>
-        </div>
-        <div class="login-right">
-            <h5>New Customer?</h5>
-            <p>Creating an account has many benefits</p>
-            <ul>
-                <li>@benefit1</li>
-                <li>@benefit2</li>
-                <li>@benefit3</li>
-            </ul>
-        <a class = "btn btn-primary rounded-pill "asp-controller="Account" asp-action="Register">Create Account</a>
-        </div>
+@{
+    String label = "If you have an account, sign in with your email address.";
+}
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
+
+    .login-container {
+        margin-right: 200px;
+    }
+
+    .login-center {
+        text-align: center;
+    }
+</style>
+
+<div class="login-container">
+    <div class="login-center">
+        <h1>Customer Login</h1>
+        <h5>Registered Customers</h5>
+        <p>@label</p>
+        <p></p>
+        <form asp-action="Login" method="post">
+            <div class="form-group">
+                <label asp-for="UserName">Username</label>
+                <input asp-for="UserName" placeholder="Your Username" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" type="password" placeholder="Your Password" class="form-control" />
+            </div>
+            <br />
+            <div>
+                <button type="submit" class="btn btn-primary rounded-pill">Login</button>
+            </div>
+            <p>Don't Have an Account?<a asp-controller="Account" asp-action="Register"> <span style="color:blue">Register now!</span></a></p>
+        </form>
     </div>
+</div>

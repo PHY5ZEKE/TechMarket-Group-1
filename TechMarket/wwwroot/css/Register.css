@@ -1,0 +1,90 @@
+﻿.wrapper {
+    position: relative;
+    max-width: 700px;
+    width: 100%;
+    background: #F5F7FF;
+    padding: 34px;
+    border-radius: 6px;
+    margin: 0 auto;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+    .wrapper h1 {
+        font-size: 28px;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .wrapper form {
+        margin-top: 30px;
+    }
+
+        .wrapper form .input-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+            .wrapper form .input-box .input-group {
+                flex: 1;
+            }
+
+            .wrapper form .input-box label {
+                display: block;
+                margin-bottom: 5px;
+                color: #333;
+            }
+
+            .wrapper form .input-box input {
+                width: 100%;
+                padding: 10px;
+                border: 1.5px solid #C7BEBE;
+                border-radius: 10px;
+                transition: border-color 0.3s ease;
+            }
+
+                .wrapper form .input-box input:focus,
+                .wrapper form .input-box input:valid {
+                    border-color: #4070f4;
+                }
+
+            .wrapper form .input-box.button {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+                .wrapper form .input-box.button input {
+                    color: #fff;
+                    letter-spacing: 1px;
+                    border: none;
+                    background: #4070f4;
+                    cursor: pointer;
+                }
+
+                    .wrapper form .input-box.button input:hover {
+                        background: #0e4bf1;
+                    }
+
+        .wrapper form .text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+
+            .wrapper form .text p {
+                color: #333;
+            }
+
+                .wrapper form .text p a {
+                    color: #4070f4;
+                    text-decoration: none;
+                }
+
+                    .wrapper form .text p a:hover {
+                        text-decoration: underline;
+                    }

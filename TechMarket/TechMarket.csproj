@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\register\id\**" />
+    <Compile Remove="wwwroot\register\pfp\**" />
+    <Content Remove="wwwroot\register\id\**" />
+    <Content Remove="wwwroot\register\pfp\**" />
+    <EmbeddedResource Remove="wwwroot\register\id\**" />
+    <EmbeddedResource Remove="wwwroot\register\pfp\**" />
+    <None Remove="wwwroot\register\id\**" />
+    <None Remove="wwwroot\register\pfp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.24" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.24" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13">
@@ -20,8 +31,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\products\image\" />
-    <Folder Include="wwwroot\register\id\" />
-    <Folder Include="wwwroot\register\pfp\" />
+    <Folder Include="wwwroot\register\" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,98 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: auto;
+        margin: 0 auto;
+    }
+
+    .text-center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 150px;
+    }
+
+    .intro {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .left-side {
+        flex: 1;
+    }
+
+    .heading {
+        color: #3853A1;
+        line-height: 1;
+        margin-bottom: 20px; /* Added margin for spacing */
+    }
+
+        .heading span {
+            font-weight: bolder;
+        }
+
+        .heading .tech {
+            font-size: 0.65em;
+        }
+
+        .heading .market {
+            font-size: 1em;
+        }
+
+    .right-side {
+        flex: 1;
+        text-align: center;
+    }
+
+        .right-side img {
+            max-width: 100%;
+            height: auto;
+        }
+
+    .button-container {
+        margin-top: 20px;
+    }
+
+    footer {
+        background-color: #3853A1;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+        padding-top:25px;
+    }
+</style>
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <section class="intro container">
+        <div class="left-side">
+            <h1 class="heading">
+                <span class="tech">Tech</span>
+                <span class="market">Market</span>
+            </h1>
+            <p>TechMarket is a dynamic online platform where technology enthusiasts and consumers converge to seamlessly buy and sell a diverse array of cutting-edge gadgets, electronics, and tech accessories.</p>
+            <div class="button-container">
+                <a asp-controller="Account" asp-action="Login" class="btn btn-primary rounded-pill">Login now!</a>
+            </div>
+        </div>
+        <div class="right-side">
+            <img class="logo" src="~/HomePhoto.png" alt="Logo">
+        </div>
+    </section>
 </div>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2023 Tech Market. All rights reserved.</p>
+    </div>
+</footer>
