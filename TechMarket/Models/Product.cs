@@ -23,6 +23,8 @@ namespace TechMarket.Models
         public int ProdPrice { get; set; }
 
         public string ProdImageURL { get; set; }
-       
+
+        
+
     }
 }

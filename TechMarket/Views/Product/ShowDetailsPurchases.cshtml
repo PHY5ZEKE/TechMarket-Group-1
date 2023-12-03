@@ -1,0 +1,38 @@
+﻿@model TechMarket.Models.Purchases
+
+<h1>Purchased Product Details</h1>
+
+@if (Model != null)
+{
+    <dl class="row">
+        <dt class="col-sm-2">Product Name:</dt>
+        <dd class="col-sm-10">@Model.ProductName</dd>
+
+        <dt class="col-sm-2">Image:</dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.ProductImageURL))
+            {
+                <img src="~/@Model.ProductImageURL" alt="Product Image" style="max-width: 200px; max-height: 200px;" />
+            }
+            else
+            {
+                <span>No Image Available</span>
+            }
+        </dd>
+
+        <dt class="col-sm-2">Description:</dt>
+        <dd class="col-sm-10">@Model.ProductDescription</dd>
+
+        <dt class="col-sm-2">Price:</dt>
+        <dd class="col-sm-10">@Model.ProductPrice</dd>
+
+        <dt class="col-sm-2">Purchase Date:</dt>
+        <dd class="col-sm-10">@Model.PurchaseDate</dd>
+    </dl>
+}
+else
+{
+    <p>No details available for the selected purchased product.</p>
+}
+
+<a asp-action="Purchases" class="btn btn-primary">Back to Purchases</a>

@@ -40,6 +40,7 @@ context.Database.EnsureCreated();
 
 
 
+
 app.UseStaticFiles();
 
 app.UseRouting();

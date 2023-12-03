@@ -141,6 +141,42 @@ namespace TechMarket.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Smartphones()
+        {
+            var smartphones = _dbContext.Products.Where(p => p.ProdTags == ProdTags.Smartphones).ToList();
+            return View("Smartphones", smartphones);
+        }
+
+        public IActionResult Computers()
+        {
+            var computers = _dbContext.Products.Where(p => p.ProdTags == ProdTags.Computers).ToList();
+            return View("Computers", computers);
+        }
+
+        public IActionResult Audio()
+        {
+            var audioProducts = _dbContext.Products.Where(p => p.ProdTags == ProdTags.Audio).ToList();
+            return View("Audio", audioProducts);
+        }
+
+        public IActionResult Cameras()
+        {
+            var cameras = _dbContext.Products.Where(p => p.ProdTags == ProdTags.Cameras).ToList();
+            return View("Cameras", cameras);
+        }
+
+        public IActionResult Accessories()
+        {
+            var accessories = _dbContext.Products.Where(p => p.ProdTags == ProdTags.Accessories).ToList();
+            return View("Accessories", accessories);
+        }
+
+        public IActionResult Misc()
+        {
+            var miscProducts = _dbContext.Products.Where(p => p.ProdTags == ProdTags.Misc).ToList();
+            return View("Misc", miscProducts);
+        }
+
         public IActionResult Listing()
         {
             var loggedInUser = _userManager.GetUserAsync(User).Result;
@@ -187,7 +223,11 @@ namespace TechMarket.Controllers
             {
                 PurchaserId = loggedInUser.Id,
                 ProductId = selectedProduct.ProdId,
-                PurchaseDate = DateTime.UtcNow
+                PurchaseDate = DateTime.UtcNow,
+                ProductName = selectedProduct.ProdName, // Add product name
+                ProductImageURL = selectedProduct.ProdImageURL, // Add product image URL
+                ProductPrice = selectedProduct.ProdPrice, // Add product price
+                ProductDescription = selectedProduct.ProdDesc,
             };
             _dbContext.PurchasedProducts.Add(purchasedProduct);
             _dbContext.SaveChanges();
@@ -227,11 +267,43 @@ namespace TechMarket.Controllers
         public IActionResult Purchases()
         {
             var loggedInUser = _userManager.GetUserAsync(User).Result;
-            var userPurchases = _dbContext.PurchasedProducts;
-               
-            return View(userPurchases);
+            if (loggedInUser != null)
+            {
+                var userPurchases = _dbContext.PurchasedProducts
+                    .Where(p => p.PurchaserId == loggedInUser.Id)
+                    .ToList();
+
+                return View(userPurchases);
+            }
+
+            return RedirectToAction("Index"); // Redirect to the product listing if the user is not logged in
         }
+
+        public IActionResult ShowDetailsPurchases(int id)
+        {
+            var loggedInUser = _userManager.GetUserAsync(User).Result;
+            if (loggedInUser != null)
+            {
+                var purchasedProduct = _dbContext.PurchasedProducts
+                    .FirstOrDefault(p => p.PurchaserId == loggedInUser.Id && p.ProductId == id);
+
+                if (purchasedProduct != null)
+                {
+                    // Assuming you have a view named "ShowDetailsPurchases" to display the details
+                    return View(purchasedProduct);
+                }
+            }
+
+            return NotFound();
+        }
+
     }
+
+   
+
+
+
+
 
     public static class SessionExtensions
     {
