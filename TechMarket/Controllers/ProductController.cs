@@ -30,7 +30,7 @@ namespace TechMarket.Controllers
                 var loggedInUser = _userManager.GetUserAsync(User).Result;
                 HttpContext.Session.SetString("UserName", loggedInUser.UserName);
                 HttpContext.Session.SetString("Address", loggedInUser.Address);
-                HttpContext.Session.SetString("FirstName", loggedInUser.FirstName);
+                HttpContext.Session.SetString("FirstName", loggedInUser.FirstName); 
                 HttpContext.Session.SetString("LastName", loggedInUser.LastName);
                 HttpContext.Session.SetString("Email", loggedInUser.Email);
                 HttpContext.Session.SetString("Phone", loggedInUser.Phone);
@@ -343,6 +343,62 @@ namespace TechMarket.Controllers
 
             return RedirectToAction("Index"); // Redirect to the product listing if the user is not logged in
         }
+        public IActionResult TransferToReceive(int toShipProductId)
+        {
+            // Get the logged-in user
+            var loggedInUser = _userManager.GetUserAsync(User).Result;
+
+            // Get the ToShipProduct that needs to be transferred
+            var toShipProduct = _dbContext.ToShipProducts
+                .FirstOrDefault(p => p.BuyerId == loggedInUser.Id && p.ToShipProductId == toShipProductId);
+
+            if (toShipProduct != null)
+            {
+                // Create a new ToReceiveProduct instance and populate its properties
+                var toReceiveProduct = new ToReceiveProduct
+                {
+                    BuyerId = toShipProduct.BuyerId,
+                    BuyerAddress = toShipProduct.BuyerAddress,
+                    SellerId = toShipProduct.SellerId,
+                    ProductId = toShipProduct.ProductId,
+                    ProductName = toShipProduct.ProductName,
+                    ProductDescription = toShipProduct.ProductDescription,
+                    ProductImageURL = toShipProduct.ProductImageURL,
+                    ProductPrice = toShipProduct.ProductPrice,
+                    PurchaseDate = toShipProduct.PurchaseDate
+                };
+
+                // Add the ToReceiveProduct to the ToReceiveProducts database
+                _dbContext.ToReceiveProducts.Add(toReceiveProduct);
+                _dbContext.SaveChanges();
+
+                // Remove the transferred product from the ToShipProducts database
+                _dbContext.ToShipProducts.Remove(toShipProduct);
+                _dbContext.SaveChanges();
+
+                return RedirectToAction("ToShip"); // Redirect to the ToShipProducts page after transfer
+            }
+
+            return NotFound();
+        }
+        public IActionResult ToReceive()
+        {
+            var loggedInUser = _userManager.GetUserAsync(User).Result;
+            if (loggedInUser != null)
+            {
+                // Fetch the products that the logged-in user is about to receive
+                var productsToReceive = _dbContext.ToReceiveProducts
+                    .Where(p => p.BuyerId == loggedInUser.Id)
+                    .ToList();
+
+                return View(productsToReceive);
+            }
+
+            return RedirectToAction("Index"); // Redirect to the product listing if the user is not logged in
+        }
+
+
+
 
 
 

@@ -1,0 +1,52 @@
+﻿@model List<TechMarket.Models.ToReceiveProduct>
+
+<!-- Add these links in the head section of your HTML file -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h2>Products to Receive</h2>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Image</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Purchase Date</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var productToReceive in Model)
+            {
+                <tr>
+                    <td>@productToReceive.ProductName</td>
+                    <td>
+                        @* Display the product image, adjust the path accordingly *@
+                        <img src="~/@productToReceive.ProductImageURL" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+                    </td>
+                    <td>@productToReceive.ProductDescription</td>
+                    <td>@productToReceive.ProductPrice</td>
+                    <td>@productToReceive.PurchaseDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No products to receive.</p>
+}

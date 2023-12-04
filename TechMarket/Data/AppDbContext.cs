@@ -7,10 +7,10 @@ namespace TechMarket.Data
     public class AppDbContext : IdentityDbContext<User>
     {
         
-            
-            public DbSet<Product> Products { get; set; }
+        public DbSet<Product> Products { get; set; }
         public DbSet<Purchases> PurchasedProducts { get; set; }
         public DbSet<ToShipProduct> ToShipProducts { get; set; }
+        public DbSet<ToReceiveProduct> ToReceiveProducts { get; set; } 
 
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
