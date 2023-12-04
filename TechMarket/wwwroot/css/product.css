@@ -3,10 +3,97 @@
 body {
     font-family: 'Poppins', sans-serif;
     margin-top: 150px;
-    margin-left: 200px;
+    margin-left: 250px;
+}
+
+
+.card {
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    width: 20.875em;
+    height: 31.5em;
+    box-shadow: 0px 1px 13px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 120ms;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    padding: 2em;
+    padding-bottom: 4em;
+    margin-right: 50px;
+    margin-bottom: 25px;
+}
+
+    .card:hover {
+        transform: scale(1.03);
+    }
+
+    .card::after {
+        content: "Show Details";
+        padding: 0.625em;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0; 
+        background: #000C38;
+        color: #FDC500;
+        height: 2.5em;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 80ms;
+        font-weight: 600;
+        text-transform: uppercase;
+        opacity: 0;
+    }
+
+    .card:hover::after {
+        bottom: 0;
+        opacity: 1;
+    }
+
+    .card .title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.9em;
+        position: absolute;
+        left: 0.625em;
+        bottom: 2.3em;
+        font-weight: bolder;
+        color: #000;
+        margin-top:  60px;
+        margin-bottom: 4px; 
+    }
+
+    .card .price {
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.9em;
+        position: absolute;
+        left: 0.925em;
+        bottom: 2.1em; 
+        color: #000C38;
+    }
+
+    .card .description {
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.9em;
+        position: absolute;
+        left: 0.925em;
+        bottom: 0.5em; 
+        color: #000;
+    }
+
+.image {
+    background: rgb(241, 241, 241);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .img-thumbnail.img-fluid {
     object-fit: cover;
-    height: 200px;
+    height: 375px;
 }

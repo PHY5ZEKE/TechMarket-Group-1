@@ -1,4 +1,21 @@
-﻿<head>
+﻿<script>
+        .image {
+        background: rgb(241, 241, 241);
+        width: 100 %;
+        height: 100 %;
+        display: flex;
+        align - items: center;
+        justify - content: center;
+    }
+
+    .img - thumbnail.img - fluid {
+        object - fit: cover;
+        height: 375px;
+    }
+ </script>
+
+
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,25 +37,14 @@
 <div class="row">
     @foreach (var product in Model)
     {
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <img src="~/@product.ProdImageURL" class="img-thumbnail img-fluid" />
+        var detailsUrl = Url.Action("ShowDetails", new { id = product.ProdId });
 
-                <div class="card-body">
-                    <h3 class="card-title">@product.ProdName</h3>
-                    <p class="card-text">@product.ProdDesc</p>
-                    <h2>@product.ProdTags</h2>
-                  @*   <h2>@product.ProdQuantity</h2> *@
-                    <h2>@product.ProdPrice</h2>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <a class="btn btn-primary" asp-action="ShowDetails" asp-route-id="@product.ProdId">Show Details</a>
-                        </div>
-                        <small class="text-muted">@product.Seller</small>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <a href="@detailsUrl" class="card">
+            <div class="image"><img src="~/@product.ProdImageURL" class="img-thumbnail img-fluid" /></div>
+            <h4><span class="title">@product.ProdName</span></h4>
+            <h6><span class="price">₱@product.ProdPrice</span></h6>
+            <h6><span class="description">@product.ProdDesc</span></h6>
+        </a>
     }
 </div>
        
