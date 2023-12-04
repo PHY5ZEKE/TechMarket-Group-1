@@ -1,0 +1,44 @@
+﻿@model List<TechMarket.Models.ToShipProduct>
+
+<h2>Products to Ship</h2>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Image</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Purchase Date</th>
+                <th>Address to Ship</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var productToShip in Model)
+            {
+                <tr>
+                    <td>@productToShip.ProductName</td>
+                    <td>
+                        @* Display the product image, adjust the path accordingly *@
+                        <img src="~/@productToShip.ProductImageURL" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+                    </td>
+                    <td>@productToShip.ProductDescription</td>
+                    <td>@productToShip.ProductPrice</td>
+                    <td>@productToShip.PurchaseDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>@productToShip.BuyerAddress</td>
+                    <td>
+                        @* Assuming you want to show the details for each product to ship *@
+                        <a href="@Url.Action("ShowDetailsToShip", "Product", new { id = productToShip.ProductId })" class="btn btn-primary">Show Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No products to ship.</p>
+}
