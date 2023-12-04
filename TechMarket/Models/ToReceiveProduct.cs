@@ -14,6 +14,6 @@ namespace TechMarket.Models
         public string ProductDescription { get; set; }
         public string ProductImageURL { get; set; }
         public int ProductPrice { get; set; }
-        public DateTime PurchaseDate { get; set; } // Date and time of the purchase
+        public DateTime PurchaseDate { get; set; } 
     }
 }

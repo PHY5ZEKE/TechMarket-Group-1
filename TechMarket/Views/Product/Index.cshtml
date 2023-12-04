@@ -14,6 +14,16 @@
     }
  </script>
 
+<div class="event__search__floater">
+    <div class="search__anchor">
+        <form id="event-search-form" action="@Url.Action("Index", "Product")" method="get">
+            <input type="text" class="search__bar" placeholder="Search Product" name="searchQuery">
+            <input class="search__submit" type="submit">
+            <div class="search__toggler"></div>
+        </form>
+    </div>
+</div>
+
 
 <head>
     <meta charset="UTF-8">

@@ -23,21 +23,34 @@ namespace TechMarket.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchQuery)
         {
+            IQueryable<Product> products = _dbContext.Products;
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                // If a search query is provided, filter products based on the query
+                products = products.Where(p =>
+                    EF.Functions.Like(p.ProdName, $"%{searchQuery}%") ||
+                    EF.Functions.Like(p.ProdDesc, $"%{searchQuery}%"));
+            }
+
             if (User.Identity.IsAuthenticated)
             {
                 var loggedInUser = _userManager.GetUserAsync(User).Result;
                 HttpContext.Session.SetString("UserName", loggedInUser.UserName);
                 HttpContext.Session.SetString("Address", loggedInUser.Address);
-                HttpContext.Session.SetString("FirstName", loggedInUser.FirstName); 
+                HttpContext.Session.SetString("FirstName", loggedInUser.FirstName);
                 HttpContext.Session.SetString("LastName", loggedInUser.LastName);
                 HttpContext.Session.SetString("Email", loggedInUser.Email);
                 HttpContext.Session.SetString("Phone", loggedInUser.Phone);
                 HttpContext.Session.SetString("Birthday", loggedInUser.Birthday.ToString());
             }
-            return View(_dbContext.Products);
+
+            return View(products.ToList());
         }
+
+
 
         public IActionResult ShowDetails(int id)
         {
@@ -143,39 +156,89 @@ namespace TechMarket.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Smartphones()
+        public IActionResult Smartphones(string searchQuery)
         {
-            var smartphones = _dbContext.Products.Where(p => p.ProdTags == ProdTags.Smartphones).ToList();
+            IQueryable<Product> products = _dbContext.Products;
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                // If a search query is provided, filter products based on the query
+                products = products.Where(p =>
+                    EF.Functions.Like(p.ProdName, $"%{searchQuery}%") ||
+                    EF.Functions.Like(p.ProdDesc, $"%{searchQuery}%"));
+            }
+
+            // Filter products with ProdTags.Smartphones
+            var smartphones = products.Where(p => p.ProdTags == ProdTags.Smartphones).ToList();
+
             return View("Smartphones", smartphones);
         }
 
-        public IActionResult Computers()
+
+        public IActionResult Computers(string searchQuery)
         {
-            var computers = _dbContext.Products.Where(p => p.ProdTags == ProdTags.Computers).ToList();
+            IQueryable<Product> products = _dbContext.Products;
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                products = products.Where(p =>
+                    EF.Functions.Like(p.ProdName, $"%{searchQuery}%") ||
+                    EF.Functions.Like(p.ProdDesc, $"%{searchQuery}%"));
+            }
+            var computers = products.Where(p => p.ProdTags == ProdTags.Computers).ToList();
+
             return View("Computers", computers);
         }
 
-        public IActionResult Audio()
+        public IActionResult Audio(string searchQuery)
         {
-            var audioProducts = _dbContext.Products.Where(p => p.ProdTags == ProdTags.Audio).ToList();
+            IQueryable<Product> products = _dbContext.Products;
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                products = products.Where(p =>
+                    EF.Functions.Like(p.ProdName, $"%{searchQuery}%") ||
+                    EF.Functions.Like(p.ProdDesc, $"%{searchQuery}%"));
+            }
+            var audioProducts = products.Where(p => p.ProdTags == ProdTags.Audio).ToList();
             return View("Audio", audioProducts);
         }
 
-        public IActionResult Cameras()
+        public IActionResult Cameras(string searchQuery)
         {
-            var cameras = _dbContext.Products.Where(p => p.ProdTags == ProdTags.Cameras).ToList();
+            IQueryable<Product> products = _dbContext.Products;
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                products = products.Where(p =>
+                    EF.Functions.Like(p.ProdName, $"%{searchQuery}%") ||
+                    EF.Functions.Like(p.ProdDesc, $"%{searchQuery}%"));
+            }
+            var cameras = products.Where(p => p.ProdTags == ProdTags.Cameras).ToList();
             return View("Cameras", cameras);
         }
 
-        public IActionResult Accessories()
+        public IActionResult Accessories(string searchQuery)
         {
-            var accessories = _dbContext.Products.Where(p => p.ProdTags == ProdTags.Accessories).ToList();
+            IQueryable<Product> products = _dbContext.Products;
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                products = products.Where(p =>
+                    EF.Functions.Like(p.ProdName, $"%{searchQuery}%") ||
+                    EF.Functions.Like(p.ProdDesc, $"%{searchQuery}%"));
+            }
+            var accessories = products.Where(p => p.ProdTags == ProdTags.Accessories).ToList();
             return View("Accessories", accessories);
         }
 
-        public IActionResult Misc()
+        public IActionResult Misc(string searchQuery)
         {
-            var miscProducts = _dbContext.Products.Where(p => p.ProdTags == ProdTags.Misc).ToList();
+            IQueryable<Product> products = _dbContext.Products;
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                products = products.Where(p =>
+                    EF.Functions.Like(p.ProdName, $"%{searchQuery}%") ||
+                    EF.Functions.Like(p.ProdDesc, $"%{searchQuery}%"));
+            }
+            var miscProducts = products.Where(p => p.ProdTags == ProdTags.Misc).ToList();
             return View("Misc", miscProducts);
         }
 
