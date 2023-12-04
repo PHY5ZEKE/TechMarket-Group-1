@@ -33,6 +33,8 @@ namespace TechMarket.Controllers
                 HttpContext.Session.SetString("FirstName", loggedInUser.FirstName);
                 HttpContext.Session.SetString("LastName", loggedInUser.LastName);
                 HttpContext.Session.SetString("Email", loggedInUser.Email);
+                HttpContext.Session.SetString("Phone", loggedInUser.Phone);
+                HttpContext.Session.SetString("Birthday", loggedInUser.Birthday.ToString());
             }
             return View(_dbContext.Products);
         }
@@ -304,6 +306,23 @@ namespace TechMarket.Controllers
                 {
                     // Assuming you have a view named "ShowDetailsPurchases" to display the details
                     return View(purchasedProduct);
+                }
+            }
+
+            return NotFound();
+        }
+        public IActionResult ShowDetailsToShip(int id)
+        {
+            var loggedInUser = _userManager.GetUserAsync(User).Result;
+            if (loggedInUser != null)
+            {
+                var toshipProducts = _dbContext.ToShipProducts
+                    .FirstOrDefault(p => p.SellerId == Guid.Parse(loggedInUser.Id) && p.ProductId == id);
+
+                if (toshipProducts != null)
+                {
+                    // Assuming you have a view named "ShowDetailsPurchases" to display the details
+                    return View(toshipProducts);
                 }
             }
 
