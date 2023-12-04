@@ -229,6 +229,19 @@ namespace TechMarket.Controllers
                 ProductPrice = selectedProduct.ProdPrice, // Add product price
                 ProductDescription = selectedProduct.ProdDesc,
             };
+            var toShipProduct = new ToShipProduct
+            {
+                BuyerId = loggedInUser.Id, // Add the buyer's ID
+                BuyerAddress = loggedInUser.Address, // Add the buyer's address
+                SellerId = selectedProduct.AcctId,
+                ProductId = selectedProduct.ProdId,
+                PurchaseDate = DateTime.UtcNow,
+                ProductName = selectedProduct.ProdName, // Add product name
+                ProductImageURL = selectedProduct.ProdImageURL, // Add product image URL
+                ProductPrice = selectedProduct.ProdPrice, // Add product price
+                ProductDescription = selectedProduct.ProdDesc,
+            };
+            _dbContext.ToShipProducts.Add(toShipProduct);
             _dbContext.PurchasedProducts.Add(purchasedProduct);
             _dbContext.SaveChanges();
             var productToDelete = _dbContext.Products.FirstOrDefault(p => p.ProdId == selectedProduct.ProdId);
@@ -296,10 +309,27 @@ namespace TechMarket.Controllers
 
             return NotFound();
         }
+        public IActionResult ToShip()
+        {
+            var loggedInUser = _userManager.GetUserAsync(User).Result;
+            if (loggedInUser != null)
+            {
+                // Fetch the products that the logged-in user has uploaded and that are purchased
+                var productsToShip = _dbContext.ToShipProducts
+                    .Where(p => p.SellerId == Guid.Parse(loggedInUser.Id))
+                    .ToList();
+
+                return View(productsToShip);
+            }
+
+            return RedirectToAction("Index"); // Redirect to the product listing if the user is not logged in
+        }
+
+
 
     }
 
-   
+
 
 
 
