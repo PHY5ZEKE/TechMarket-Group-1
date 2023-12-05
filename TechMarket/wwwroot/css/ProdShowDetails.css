@@ -1,0 +1,65 @@
+﻿
+.left_card {
+    height: 475px;
+    width: 500px;
+    margin-top: 40px;
+}
+.image_container img{
+    height: 400px;
+    width: 100%;
+}
+.name_prod {
+    background-color: #000C38;
+    color: #FDC500;
+    font-weight: 700;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.title_item {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.right_card{
+    width:500px!important;
+    margin-top: 40px;
+}
+.desc_container {
+    margin-top: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.desc_container p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 20px;
+}
+.button_container{
+    display:flex;
+    height: 75px;
+}
+.button_container .btn {
+    height: 60px;   
+    width: 430px;
+    margin:auto!important;
+    margin-left: 10px!important;
+    margin-right: 10px!important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 20px;
+}
+.button_container a {
+    vertical-align: middle;
+}
+.button_container button {
+        background-color: #ebebeb;
+}
+.tag_container {
+    color: #000C38;
+}
+.tag_container h5 {
+    margin: auto 0;
+    font-weight: 800;
+    font-size: 30px;
+}
