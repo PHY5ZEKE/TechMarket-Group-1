@@ -5,6 +5,7 @@ using TechMarket.Models;
 using TechMarket.ViewModels;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 
 namespace TechMarket.Controllers
 {
@@ -13,12 +14,14 @@ namespace TechMarket.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly AppDbContext _dbContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AccountController(SignInManager<User> signInManager, AppDbContext dbContext, UserManager<User> userManager)
+        public AccountController(SignInManager<User> signInManager, AppDbContext dbContext, UserManager<User> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _dbContext = dbContext;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult login()
         {
@@ -96,10 +99,37 @@ namespace TechMarket.Controllers
                 newUser.FirstName = userEnteredData.FirstName;
                 newUser.LastName = userEnteredData.LastName;
                 newUser.Email = userEnteredData.Email;
-                newUser.PhoneNumber = userEnteredData.Phone;
+                newUser.Phone = userEnteredData.Phone;
                 newUser.Birthday = userEnteredData.Birthday;
                 newUser.Address = userEnteredData.Address;
-                newUser.Phone = userEnteredData.Phone;
+
+                // Check and save profile picture
+                if (userEnteredData.ProfilePicture != null && userEnteredData.ProfilePicture.Length > 0)
+                {
+                    var profilePictureFileName = $"{Guid.NewGuid()}_{userEnteredData.ProfilePicture.FileName}";
+                    var profilePicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "profile", "pfp", profilePictureFileName);
+
+                    using (var stream = new FileStream(profilePicturePath, FileMode.Create))
+                    {
+                        await userEnteredData.ProfilePicture.CopyToAsync(stream);
+                    }
+
+                    newUser.ProfilePictureUrl = $"profile/pfp/{profilePictureFileName}";
+                }
+
+                // Check and save ID picture
+                if (userEnteredData.IdPicture != null && userEnteredData.IdPicture.Length > 0)
+                {
+                    var idPictureFileName = $"{Guid.NewGuid()}_{userEnteredData.IdPicture.FileName}";
+                    var idPicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "profile", "id", idPictureFileName);
+
+                    using (var stream = new FileStream(idPicturePath, FileMode.Create))
+                    {
+                        await userEnteredData.IdPicture.CopyToAsync(stream);
+                    }
+
+                    newUser.IdPictureUrl = $"profile/id/{idPictureFileName}";
+                }
 
                 var result = await _userManager.CreateAsync(newUser, userEnteredData.Password);
 
@@ -114,11 +144,12 @@ namespace TechMarket.Controllers
                         ModelState.AddModelError("", error.Description);
                     }
                 }
-
-
             }
+
             return View(userEnteredData);
         }
+
+
 
 
 

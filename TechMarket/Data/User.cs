@@ -9,5 +9,7 @@ namespace TechMarket.Data
         public DateTime? Birthday { get; set; }
         public string? Address { get; set; }
         public string? Phone { get; set; }
+        public string? ProfilePictureUrl { get; set; }
+        public string? IdPictureUrl { get; set; }
     }
 }

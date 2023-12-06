@@ -47,6 +47,14 @@ namespace TechMarket.ViewModels
         [Display(Name = "Phone Number")]
         [Required(ErrorMessage = "This field is required1")]
         public string? Phone { get; set; }
+
+        [Display(Name = "Profile Picture")]
+        public IFormFile? ProfilePicture { get; set; }
+
+        [Display(Name = "ID Picture")]
+        public IFormFile? IdPicture { get; set; }
+
+        
     }
 }
 

@@ -25,7 +25,10 @@ builder.Services.AddDefaultIdentity<User>(options =>
 
 }).AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddControllersWithViews();
-
+builder.Services.Configure<IISServerOptions>(options =>
+{
+    options.AllowSynchronousIO = true;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,7 +38,7 @@ if (!app.Environment.IsDevelopment())
 }
 var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
 context.Database.EnsureCreated();
-//context.Database.EnsureDeleted();
+//.Database.EnsureDeleted();
 
 
 

@@ -45,6 +45,8 @@ namespace TechMarket.Controllers
                 HttpContext.Session.SetString("Email", loggedInUser.Email);
                 HttpContext.Session.SetString("Phone", loggedInUser.Phone);
                 HttpContext.Session.SetString("Birthday", loggedInUser.Birthday.ToString());
+                HttpContext.Session.SetString("ProfilePictureUrl", loggedInUser.ProfilePictureUrl);
+                HttpContext.Session.SetString("IdPictureUrl", loggedInUser.IdPictureUrl);
             }
 
             return View(products.ToList());
