@@ -6,6 +6,7 @@ using TechMarket.Models;
 using Stripe.Checkout;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TechMarket.Controllers
 {
@@ -22,7 +23,6 @@ namespace TechMarket.Controllers
             _userManager = userManager;
             _webHostEnvironment = webHostEnvironment;
         }
-
         public IActionResult Index(string searchQuery)
         {
             IQueryable<Product> products = _dbContext.Products;
@@ -77,6 +77,8 @@ namespace TechMarket.Controllers
             {
                 newProduct.AcctId = Guid.Parse(user.Id);
                 newProduct.Seller = user.UserName;
+                newProduct.SellerEmail = user.Email;
+                newProduct.SellerContact = user.Phone;
                 if (newProduct.ProdImage != null)
                 {
                     string folder = "products/image/";
@@ -298,7 +300,13 @@ namespace TechMarket.Controllers
             {
                 BuyerId = loggedInUser.Id, // Add the buyer's ID
                 BuyerAddress = loggedInUser.Address, // Add the buyer's address
+                BuyerEmail = loggedInUser.Email,
+                BuyerName = loggedInUser.FirstName+" " +loggedInUser.LastName,
+                BuyerContact = loggedInUser.Phone,
                 SellerId = selectedProduct.AcctId,
+                SellerName = selectedProduct.Seller,
+                SellerEmail = selectedProduct.SellerEmail,
+                SellerContact = selectedProduct.SellerContact,
                 ProductId = selectedProduct.ProdId,
                 PurchaseDate = DateTime.UtcNow,
                 ProductName = selectedProduct.ProdName, // Add product name
@@ -391,6 +399,46 @@ namespace TechMarket.Controllers
 
             return NotFound();
         }
+        public IActionResult ShowDetailsToReceive(int id)
+        {
+            var loggedInUser = _userManager.GetUserAsync(User).Result;
+            if (loggedInUser != null)
+            {
+                var toReceiveProducts = _dbContext.ToReceiveProducts
+                    .FirstOrDefault(p => p.BuyerId == loggedInUser.Id && p.ToReceiveProductId == id);
+
+                if (toReceiveProducts != null)
+                {
+                    // Assuming you have a view named "ShowDetailsPurchases" to display the details
+                    return View(toReceiveProducts);
+                }
+            }
+
+            return NotFound();
+        }
+        [HttpPost]
+        public IActionResult DeleteToReceiveProduct(int id)
+        {
+            var loggedInUser = _userManager.GetUserAsync(User).Result;
+            if (loggedInUser != null)
+            {
+                var toReceiveProduct = _dbContext.ToReceiveProducts
+                    .FirstOrDefault(p => p.BuyerId == loggedInUser.Id && p.ToReceiveProductId == id);
+
+                if (toReceiveProduct != null)
+                {
+                    // Perform the actual deletion from the database
+                    _dbContext.ToReceiveProducts.Remove(toReceiveProduct);
+                    _dbContext.SaveChanges();
+
+                    // Redirect to a success page or another appropriate action
+                    return RedirectToAction("ToReceive", "Product");
+                }
+            }
+
+            return NotFound();
+        }
+
         public IActionResult ToShip()
         {
             var loggedInUser = _userManager.GetUserAsync(User).Result;
@@ -413,7 +461,7 @@ namespace TechMarket.Controllers
 
             // Get the ToShipProduct that needs to be transferred
             var toShipProduct = _dbContext.ToShipProducts
-                .FirstOrDefault(p => p.BuyerId == loggedInUser.Id && p.ToShipProductId == toShipProductId);
+                .FirstOrDefault(p => p.ToShipProductId == toShipProductId);
 
             if (toShipProduct != null)
             {
@@ -422,7 +470,13 @@ namespace TechMarket.Controllers
                 {
                     BuyerId = toShipProduct.BuyerId,
                     BuyerAddress = toShipProduct.BuyerAddress,
+                    BuyerEmail = loggedInUser.Email,
+                    BuyerName = loggedInUser.FirstName + " " + loggedInUser.LastName,
+                    BuyerContact = loggedInUser.Phone,
                     SellerId = toShipProduct.SellerId,
+                    SellerName = toShipProduct.SellerName,
+                    SellerEmail = toShipProduct.SellerEmail,
+                    SellerContact = toShipProduct.SellerContact,
                     ProductId = toShipProduct.ProductId,
                     ProductName = toShipProduct.ProductName,
                     ProductDescription = toShipProduct.ProductDescription,

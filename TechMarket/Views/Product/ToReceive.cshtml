@@ -1,10 +1,24 @@
 ﻿@model List<TechMarket.Models.ToReceiveProduct>
 
-<!-- Add these links in the head section of your HTML file -->
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script>
+    function confirmReceived(productId) {
+        $('#confirmReceivedModal').modal('show');
+
+        // Set the product ID in the modal's form action
+        $('#confirmReceivedForm').attr('action', '/Product/DeleteToReceiveProduct/' + productId);
+
+    }
+
+    function closeConfirmReceivedModal() {
+        $('#confirmReceivedModal').modal('hide');
+    }
+</script>
 
 <br />
 <br />
@@ -25,6 +39,10 @@
                 <th>Description</th>
                 <th>Price</th>
                 <th>Purchase Date</th>
+                <th>Seller</th>
+                <th>Seller Email</th>
+                <th>Seller Contact</th>
+                <th>Action</th>
                
             </tr>
         </thead>
@@ -40,7 +58,17 @@
                     <td>@productToReceive.ProductDescription</td>
                     <td>@productToReceive.ProductPrice</td>
                     <td>@productToReceive.PurchaseDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                   
+                    <td>@productToReceive.SellerName</td>
+                    <td>@productToReceive.SellerEmail</td>
+                    <td>@productToReceive.SellerContact</td>
+                    <td>
+                        <a href="@Url.Action("ShowDetailsToReceive", "Product", new { id = productToReceive.ToReceiveProductId })" class="btn btn-primary">Show Details</a> <br> <br>
+                        <a class="btn btn-warning" onclick="confirmReceived('@productToReceive.ToReceiveProductId')">
+                            Confirm Product Received
+                        </a>
+
+                    </td>
+
                 </tr>
             }
         </tbody>
@@ -50,3 +78,30 @@ else
 {
     <p>No products to receive.</p>
 }
+
+<!-- Modal for confirmation -->
+<div class="modal" tabindex="-1" role="dialog" id="confirmReceivedModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Product Shipped</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeConfirmReceivedModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure the product has been shipped?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeConfirmReceivedModal()">Cancel</button>
+                <form id="confirmReceivedForm" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-warning">Confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add these links in the head section of your HTML file -->
