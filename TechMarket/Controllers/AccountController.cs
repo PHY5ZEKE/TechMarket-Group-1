@@ -92,58 +92,62 @@ namespace TechMarket.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel userEnteredData)
         {
-            if (ModelState.IsValid)
-            {
-                User newUser = new User();
-                newUser.UserName = userEnteredData.UserName;
-                newUser.FirstName = userEnteredData.FirstName;
-                newUser.LastName = userEnteredData.LastName;
-                newUser.Email = userEnteredData.Email;
-                newUser.Phone = userEnteredData.Phone;
-                newUser.Birthday = userEnteredData.Birthday;
-                newUser.Address = userEnteredData.Address;
+            
 
-                // Check and save profile picture
-                if (userEnteredData.ProfilePicture != null && userEnteredData.ProfilePicture.Length > 0)
+                if (ModelState.IsValid)
                 {
-                    var profilePictureFileName = $"{Guid.NewGuid()}_{userEnteredData.ProfilePicture.FileName}";
-                    var profilePicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "profile", "pfp", profilePictureFileName);
+                string address = $"{userEnteredData.BuildingNumber}, {userEnteredData.StreetName}, {userEnteredData.Barangay}, {userEnteredData.CityOrMunicipality}, {userEnteredData.Province}, {userEnteredData.PostalCode}";
+                 User newUser = new User();
+                    newUser.UserName = userEnteredData.UserName;
+                    newUser.FirstName = userEnteredData.FirstName;
+                    newUser.LastName = userEnteredData.LastName;
+                    newUser.Email = userEnteredData.Email;
+                    newUser.Phone = userEnteredData.Phone;
+                    newUser.Birthday = userEnteredData.Birthday;
+                newUser.Address = address;
 
-                    using (var stream = new FileStream(profilePicturePath, FileMode.Create))
+                    // Check and save profile picture
+                    if (userEnteredData.ProfilePicture != null && userEnteredData.ProfilePicture.Length > 0)
                     {
-                        await userEnteredData.ProfilePicture.CopyToAsync(stream);
+                        var profilePictureFileName = $"{Guid.NewGuid()}_{userEnteredData.ProfilePicture.FileName}";
+                        var profilePicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "profile", "pfp", profilePictureFileName);
+
+                        using (var stream = new FileStream(profilePicturePath, FileMode.Create))
+                        {
+                            await userEnteredData.ProfilePicture.CopyToAsync(stream);
+                        }
+
+                        newUser.ProfilePictureUrl = $"profile/pfp/{profilePictureFileName}";
                     }
 
-                    newUser.ProfilePictureUrl = $"profile/pfp/{profilePictureFileName}";
-                }
-
-                // Check and save ID picture
-                if (userEnteredData.IdPicture != null && userEnteredData.IdPicture.Length > 0)
-                {
-                    var idPictureFileName = $"{Guid.NewGuid()}_{userEnteredData.IdPicture.FileName}";
-                    var idPicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "profile", "id", idPictureFileName);
-
-                    using (var stream = new FileStream(idPicturePath, FileMode.Create))
+                    // Check and save ID picture
+                    if (userEnteredData.IdPicture != null && userEnteredData.IdPicture.Length > 0)
                     {
-                        await userEnteredData.IdPicture.CopyToAsync(stream);
+                        var idPictureFileName = $"{Guid.NewGuid()}_{userEnteredData.IdPicture.FileName}";
+                        var idPicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "profile", "id", idPictureFileName);
+
+                        using (var stream = new FileStream(idPicturePath, FileMode.Create))
+                        {
+                            await userEnteredData.IdPicture.CopyToAsync(stream);
+                        }
+
+                        newUser.IdPictureUrl = $"profile/id/{idPictureFileName}";
                     }
 
-                    newUser.IdPictureUrl = $"profile/id/{idPictureFileName}";
-                }
+                    var result = await _userManager.CreateAsync(newUser, userEnteredData.Password);
 
-                var result = await _userManager.CreateAsync(newUser, userEnteredData.Password);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
+                    if (result.Succeeded)
                     {
-                        ModelState.AddModelError("", error.Description);
+                        return RedirectToAction("Login", "Account");
                     }
-                }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                    }
+                
             }
 
             return View(userEnteredData);

@@ -51,6 +51,34 @@ namespace TechMarket.Controllers
 
             return View(products.ToList());
         }
+        public IActionResult AdminProductView(string searchQuery)
+        {
+            IQueryable<Product> products = _dbContext.Products;
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                // If a search query is provided, filter products based on the query
+                products = products.Where(p =>
+                    EF.Functions.Like(p.ProdName, $"%{searchQuery}%") ||
+                    EF.Functions.Like(p.ProdDesc, $"%{searchQuery}%"));
+            }
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var loggedInUser = _userManager.GetUserAsync(User).Result;
+                HttpContext.Session.SetString("UserName", loggedInUser.UserName);
+                HttpContext.Session.SetString("Address", loggedInUser.Address);
+                HttpContext.Session.SetString("FirstName", loggedInUser.FirstName);
+                HttpContext.Session.SetString("LastName", loggedInUser.LastName);
+                HttpContext.Session.SetString("Email", loggedInUser.Email);
+                HttpContext.Session.SetString("Phone", loggedInUser.Phone);
+                HttpContext.Session.SetString("Birthday", loggedInUser.Birthday.ToString());
+                HttpContext.Session.SetString("ProfilePictureUrl", loggedInUser.ProfilePictureUrl);
+                HttpContext.Session.SetString("IdPictureUrl", loggedInUser.IdPictureUrl);
+            }
+
+            return View(products.ToList());
+        }
 
 
 

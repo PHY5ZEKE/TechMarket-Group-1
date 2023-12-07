@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\products\image\" />
-    <Folder Include="wwwroot\profile\id\" />
     <Folder Include="wwwroot\profile\pfp\" />
     <Folder Include="wwwroot\register\" />
   </ItemGroup>
