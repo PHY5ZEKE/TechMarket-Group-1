@@ -1,47 +1,18 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@{
+   
+    var userName = Context.Session.GetString("UserName");
+   }
+
 @model Product ;
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="~/css/ProdShowDetails.css">
 
-<!--
-<table class="table table-dark">
-    <tr>
-        <th>Product ID</th>
-        <td>@Model.ProdId</td>
-    </tr>
-    <tr>
-        <th>Seller</th>
-        <td>@Model.Seller</td>
-    </tr>
-    <tr>
-        <th>Image</th>
-        <td>  <img src="~/@Model.ProdImageURL" class="img-thumbnail img-fluid" /></td>
-    </tr>
-    <tr>
-        <th>Product Name</th>
-        <td>@Model.ProdName</td>
-    </tr>
-    <tr>
-        <th>Description</th>
-        <td>@Model.ProdDesc</td>
-    </tr>
-    <tr>
-        <th>Tags</th>
-        <td>@Model.ProdTags</td>
-    </tr>
-    @* <tr>
-        <th>Quantity</th>
-        <td>@Model.ProdQuantity</td>
-    </tr> *@
-    <tr>
-        <th>Price</th>
-        <td>@Model.ProdPrice</td>
-    </tr>
-</table>
--->
+
+@if (!User.Identity.IsAuthenticated || @userName == Model.Seller)
+{
+    <h1>This is your Product</h1>
+}
 
 <div class="d-flex justify-content-center ">
     <div class="left_card card shadow-lg">
@@ -63,8 +34,20 @@
             <p class="card-text"> @Model.ProdDesc </p>
         </div>
         <div class="card-footer button_container justify-content-between">
-            <a asp-action="Checkout" asp-controller="Product" value="Checkout" class="btn ">Proceed to Checkout</a>
-            <button class="btn" type="button" onclick="history.back()">Cancel Checkout</button>
+            @if (!User.Identity.IsAuthenticated || @userName != Model.Seller)
+    {
+        <a asp-action="Checkout" asp-controller="Product" value="Checkout" class="btn">Proceed to Checkout</a>
+    }
+    <button class="btn" type="button" onclick="history.back()">
+                @if (User.Identity.IsAuthenticated && @userName == Model.Seller)
+        {
+            <span>Back</span>
+        }
+        else
+        {
+            <span>Cancel Checkout</span>
+        }
+    </button>
         </div>
     </div>
 </div>
