@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Http;
 using TechMarket.Data;
 using TechMarket.Models;
 using Stripe.Checkout;
@@ -315,44 +315,8 @@ namespace TechMarket.Controllers
             Session session = service.Create(options);
             TempData["Session"] = session.Id;
 
-            var loggedInUser = _userManager.GetUserAsync(User).Result;
-            var purchasedProduct = new Purchases
-            {
-                PurchaserId = loggedInUser.Id,
-                ProductId = selectedProduct.ProdId,
-                PurchaseDate = DateTime.UtcNow,
-                ProductName = selectedProduct.ProdName, // Add product name
-                ProductImageURL = selectedProduct.ProdImageURL, // Add product image URL
-                ProductPrice = selectedProduct.ProdPrice, // Add product price
-                ProductDescription = selectedProduct.ProdDesc,
-            };
-            var toShipProduct = new ToShipProduct
-            {
-                BuyerId = loggedInUser.Id, // Add the buyer's ID
-                BuyerAddress = loggedInUser.Address, // Add the buyer's address
-                BuyerEmail = loggedInUser.Email,
-                BuyerName = loggedInUser.FirstName+" " +loggedInUser.LastName,
-                BuyerContact = loggedInUser.Phone,
-                SellerId = selectedProduct.AcctId,
-                SellerName = selectedProduct.Seller,
-                SellerEmail = selectedProduct.SellerEmail,
-                SellerContact = selectedProduct.SellerContact,
-                ProductId = selectedProduct.ProdId,
-                PurchaseDate = DateTime.UtcNow,
-                ProductName = selectedProduct.ProdName, // Add product name
-                ProductImageURL = selectedProduct.ProdImageURL, // Add product image URL
-                ProductPrice = selectedProduct.ProdPrice, // Add product price
-                ProductDescription = selectedProduct.ProdDesc,
-            };
-            _dbContext.ToShipProducts.Add(toShipProduct);
-            _dbContext.PurchasedProducts.Add(purchasedProduct);
-            _dbContext.SaveChanges();
-            var productToDelete = _dbContext.Products.FirstOrDefault(p => p.ProdId == selectedProduct.ProdId);
-            if (productToDelete != null)
-            {
-                _dbContext.Products.Remove(productToDelete);
-                _dbContext.SaveChanges();
-            }
+           
+          
 
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
@@ -360,15 +324,77 @@ namespace TechMarket.Controllers
 
         public IActionResult OrderConfirmation()
         {
+            var sessionId = TempData["Session"]?.ToString();
+
+            if (string.IsNullOrEmpty(sessionId))
+            {
+                // Handle the case where the session ID is missing or invalid
+                return View("Failure");
+            }
+
             var service = new SessionService();
-            Session session = service.Get(TempData["Session"].ToString());
+            Session session = service.Get(sessionId);
+
             if (session.PaymentStatus == "paid")
             {
-                var transaction = session.PaymentIntentId.ToString();
+                // Retrieve selectedProduct again
+                var selectedProduct = HttpContext.Session.GetObject<Product>("SelectedProduct");
+
+                if (selectedProduct == null)
+                {
+                    // Handle the case where the selected product is missing
+                    return View("Failure");
+                }
+
+                var loggedInUser = _userManager.GetUserAsync(User).Result;
+
+                var purchasedProduct = new Purchases
+                {
+                    PurchaserId = loggedInUser.Id,
+                    ProductId = selectedProduct.ProdId,
+                    PurchaseDate = DateTime.UtcNow,
+                    ProductName = selectedProduct.ProdName,
+                    ProductImageURL = selectedProduct.ProdImageURL,
+                    ProductPrice = selectedProduct.ProdPrice,
+                    ProductDescription = selectedProduct.ProdDesc,
+                };
+
+                var toShipProduct = new ToShipProduct
+                {
+                    BuyerId = loggedInUser.Id,
+                    BuyerAddress = loggedInUser.Address,
+                    BuyerEmail = loggedInUser.Email,
+                    BuyerName = loggedInUser.FirstName + " " + loggedInUser.LastName,
+                    BuyerContact = loggedInUser.Phone,
+                    SellerId = selectedProduct.AcctId,
+                    SellerName = selectedProduct.Seller,
+                    SellerEmail = selectedProduct.SellerEmail,
+                    SellerContact = selectedProduct.SellerContact,
+                    ProductId = selectedProduct.ProdId,
+                    PurchaseDate = DateTime.UtcNow,
+                    ProductName = selectedProduct.ProdName,
+                    ProductImageURL = selectedProduct.ProdImageURL,
+                    ProductPrice = selectedProduct.ProdPrice,
+                    ProductDescription = selectedProduct.ProdDesc,
+                };
+
+                _dbContext.ToShipProducts.Add(toShipProduct);
+                _dbContext.PurchasedProducts.Add(purchasedProduct);
+                _dbContext.SaveChanges();
+
+                var productToDelete = _dbContext.Products.FirstOrDefault(p => p.ProdId == selectedProduct.ProdId);
+                if (productToDelete != null)
+                {
+                    _dbContext.Products.Remove(productToDelete);
+                    _dbContext.SaveChanges();
+                }
+
                 return View("Success");
             }
+
             return View("Failure");
         }
+
 
         public IActionResult Success()
         {
@@ -571,12 +597,3 @@ namespace TechMarket.Controllers
         }
     }
 }
-
-
-
-
-
-
-
-
-
