@@ -1,6 +1,6 @@
-﻿@model TechMarket.Models.ToShipProduct
+﻿@model TechMarket.Models.ToReceiveProduct
 
-<h1>Products To Ship</h1>
+<h1>Products To Receive</h1>
 
 @if (Model != null)
 {
@@ -29,17 +29,14 @@
         <dt class="col-sm-2">Purchase Date:</dt>
         <dd class="col-sm-10">@Model.PurchaseDate</dd>
 
-        <dt class="col-sm-2">Buyer Name:</dt>
-        <dd class="col-sm-10">@Model.BuyerName </dd>
+        <dt class="col-sm-2">Seller Name:</dt>
+        <dd class="col-sm-10">@Model.SellerName </dd>
 
-        <dt class="col-sm-2">Address:</dt>
-        <dd class="col-sm-10">@Model.BuyerAddress</dd>
+        <dt class="col-sm-2">Seller Email:</dt>
+        <dd class="col-sm-10">@Model.SellerEmail</dd>
 
-        <dt class="col-sm-2">Buyer Email:</dt>
-        <dd class="col-sm-10">@Model.BuyerEmail</dd>
-
-        <dt class="col-sm-2">Buyer Contact:</dt>
-        <dd class="col-sm-10">@Model.BuyerContact</dd>
+        <dt class="col-sm-2">Seller Contact:</dt>
+        <dd class="col-sm-10">@Model.SellerContact</dd>
     </dl>
 }
 else
@@ -47,4 +44,4 @@ else
     <p>No details available for the selected purchased product.</p>
 }
 
-<a asp-action="ToShip" class="btn btn-primary">Back</a>
+<a asp-action="ToReceive" class="btn btn-primary">Back</a>

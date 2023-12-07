@@ -3,23 +3,26 @@
 body {
     font-family: 'Poppins';
 }
-.main {
+
+.success_container {
     max-width: 700px;
     border-radius: 20px;
     overflow: auto;
     margin: 50px auto;
-    padding: 20px;  
+    padding: 20px;
 }
+
 svg {
     margin-left: 250px;
     margin-bottom: 20px;
     margin-top: 60px;
 }
-.main h1{
+
+.main h1 {
     text-align: center;
     margin-top: 10px;
 }
-a{
+.back_success {
     margin-left: 230px;
     margin-top: 20px;
 }
