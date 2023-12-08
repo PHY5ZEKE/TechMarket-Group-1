@@ -63,21 +63,26 @@ namespace TechMarket.Controllers
                     EF.Functions.Like(p.ProdDesc, $"%{searchQuery}%"));
             }
 
-            if (User.Identity.IsAuthenticated)
-            {
-                var loggedInUser = _userManager.GetUserAsync(User).Result;
-                HttpContext.Session.SetString("UserName", loggedInUser.UserName);
-                HttpContext.Session.SetString("Address", loggedInUser.Address);
-                HttpContext.Session.SetString("FirstName", loggedInUser.FirstName);
-                HttpContext.Session.SetString("LastName", loggedInUser.LastName);
-                HttpContext.Session.SetString("Email", loggedInUser.Email);
-                HttpContext.Session.SetString("Phone", loggedInUser.Phone);
-                HttpContext.Session.SetString("Birthday", loggedInUser.Birthday.ToString());
-                HttpContext.Session.SetString("ProfilePictureUrl", loggedInUser.ProfilePictureUrl);
-                HttpContext.Session.SetString("IdPictureUrl", loggedInUser.IdPictureUrl);
-            }
+            
 
             return View(products.ToList());
+        }
+
+        public IActionResult SellerInformation(string sellerId)
+        {
+            // Fetch seller information based on sellerId
+            // You can use _userManager or your data access logic to retrieve seller details
+
+            // Example: Fetch seller details from the database
+            var seller = _dbContext.Products.FirstOrDefault(u => u.AcctId == Guid.Parse(sellerId));
+
+            if (seller == null)
+            {
+                // Handle the case where the seller is not found
+                return NotFound();
+            }
+
+            return View(seller); // Pass the seller details to the view
         }
 
 
@@ -109,6 +114,10 @@ namespace TechMarket.Controllers
                 newProduct.Seller = user.UserName;
                 newProduct.SellerEmail = user.Email;
                 newProduct.SellerContact = user.Phone;
+                newProduct.SellerFName = user.FirstName;
+                newProduct.SellerLName = user.LastName;
+                newProduct.SellerPfp = user.ProfilePictureUrl;
+                newProduct.SellerID = user.IdPictureUrl;
                 if (newProduct.ProdImage != null)
                 {
                     string folder = "products/image/";
@@ -352,6 +361,8 @@ namespace TechMarket.Controllers
                 {
                     PurchaserId = loggedInUser.Id,
                     ProductId = selectedProduct.ProdId,
+                    SellerId = selectedProduct.AcctId,
+                    Seller = selectedProduct.Seller,
                     PurchaseDate = DateTime.UtcNow,
                     ProductName = selectedProduct.ProdName,
                     ProductImageURL = selectedProduct.ProdImageURL,
@@ -416,6 +427,20 @@ namespace TechMarket.Controllers
                     .ToList();
 
                 return View(userPurchases);
+            }
+
+            return RedirectToAction("Index"); // Redirect to the product listing if the user is not logged in
+        }
+        public IActionResult Sold()
+        {
+            var loggedInUser = _userManager.GetUserAsync(User).Result;
+            if (loggedInUser != null)
+            {
+                var userSold = _dbContext.PurchasedProducts
+                    .Where(p => p.SellerId == Guid.Parse(loggedInUser.Id))
+                    .ToList();
+
+                return View(userSold);
             }
 
             return RedirectToAction("Index"); // Redirect to the product listing if the user is not logged in

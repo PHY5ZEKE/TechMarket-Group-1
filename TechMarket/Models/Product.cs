@@ -13,10 +13,12 @@ namespace TechMarket.Models
         public int ProdId { get; set; }
         public Guid AcctId { get; set; }
         public string Seller { get; set; }
+        public string SellerFName { get; set; }
+        public string SellerLName { get; set; }
         public string SellerEmail { get; set; }
-
         public string SellerContact { get;set; }
-
+        public string SellerPfp { get; set; }
+        public string SellerID { get; set; }
         [NotMapped]
         public IFormFile ProdImage { get; set; }
         public string ProdName { get; set; }

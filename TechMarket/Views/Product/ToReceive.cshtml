@@ -58,7 +58,11 @@
                     <td>@productToReceive.ProductDescription</td>
                     <td>@productToReceive.ProductPrice</td>
                     <td>@productToReceive.PurchaseDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                    <td>@productToReceive.SellerName</td>
+                    <td>
+                        <a asp-controller="Product" asp-action="SellerInformation" asp-route-sellerId="@productToReceive.SellerId">
+                            @productToReceive.SellerName
+                        </a>
+                    </td>
                     <td>@productToReceive.SellerEmail</td>
                     <td>@productToReceive.SellerContact</td>
                     <td>

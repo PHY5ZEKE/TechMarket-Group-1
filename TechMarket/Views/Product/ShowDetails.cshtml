@@ -30,7 +30,11 @@
         <div class="card-body desc_container">
             <h6 class="card-subtitle mb-2 text-muted">Tag: @Model.ProdTags</h6>
             <h6 class="card-subtitle mb-2 text-muted"><i style="font-size:18px" class="fa">&#xf0d6;</i> PHP @Model.ProdPrice</h6>
-            <h6 class="card-subtitle mb-2 text-muted">Seller: @Model.Seller</h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+                <a asp-controller="Product" asp-action="SellerInformation" asp-route-sellerId="@Model.AcctId">
+                    @Model.Seller
+                </a>
+            </h6>
             <p class="card-text"> @Model.ProdDesc </p>
         </div>
         <div class="card-footer button_container justify-content-between">

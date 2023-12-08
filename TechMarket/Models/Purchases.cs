@@ -9,6 +9,8 @@ namespace TechMarket.Models
         [Key]
         public int PurchasedProductId { get; set; }
         public string PurchaserId { get; set; } // User ID of the purchaser
+        public Guid SellerId {get; set; }
+        public string Seller { get; set; }
         public User Purchaser { get; set; }
         public int ProductId { get; set; } // ID of the purchased product
         public string ProductName { get; set; }
