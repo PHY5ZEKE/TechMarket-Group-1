@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace TechMarket.ViewModels
 {
     public class RegisterViewModel
     {
-        
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "This field is required!")]
         public string? FirstName { get; set; }
@@ -17,7 +18,6 @@ namespace TechMarket.ViewModels
         [Display(Name = "Email Address")]
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Email address is required!")]
-       
         public string? Email { get; set; }
 
         [Display(Name = "User Name")]
@@ -35,9 +35,25 @@ namespace TechMarket.ViewModels
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string? ConfirmPassword { get; set; }
 
-        [Display(Name = "Address")]
-        [Required(ErrorMessage = "This field is required!")]
-        public string Address { get; set; }
+        // Segmented Address Fields
+        [Display(Name = "Building/House Number")]
+        public string? BuildingNumber { get; set; }
+
+        [Display(Name = "Street Name")]
+        public string? StreetName { get; set; }
+
+        [Display(Name = "Barangay")]
+        public string? Barangay { get; set; }
+
+        [Display(Name = "City/Municipality")]
+        public string? CityOrMunicipality { get; set; }
+
+        [Display(Name = "Province")]
+        public string? Province { get; set; }
+
+        [Display(Name = "Postal Code")]
+        public string? PostalCode { get; set; }
+        // End of Segmented Address Fields
 
         [Display(Name = "Birthday")]
         [Required(ErrorMessage = "This field is required!")]
@@ -45,7 +61,7 @@ namespace TechMarket.ViewModels
         public DateTime Birthday { get; set; }
 
         [Display(Name = "Phone Number")]
-        [Required(ErrorMessage = "This field is required1")]
+        [Required(ErrorMessage = "This field is required!")]
         public string? Phone { get; set; }
 
         [Display(Name = "Profile Picture")]
@@ -53,8 +69,5 @@ namespace TechMarket.ViewModels
 
         [Display(Name = "ID Picture")]
         public IFormFile? IdPicture { get; set; }
-
-        
     }
 }
-
