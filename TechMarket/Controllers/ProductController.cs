@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using TechMarket.Data;
@@ -38,6 +38,7 @@ namespace TechMarket.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var loggedInUser = _userManager.GetUserAsync(User).Result;
+                HttpContext.Session.SetString("Id", loggedInUser.Id);
                 HttpContext.Session.SetString("UserName", loggedInUser.UserName);
                 HttpContext.Session.SetString("Address", loggedInUser.Address);
                 HttpContext.Session.SetString("FirstName", loggedInUser.FirstName);
@@ -68,6 +69,7 @@ namespace TechMarket.Controllers
             return View(products.ToList());
         }
 
+
         public IActionResult SellerInformation(string sellerId)
         {
             // Fetch seller information based on sellerId
@@ -84,6 +86,14 @@ namespace TechMarket.Controllers
 
             return View(seller); // Pass the seller details to the view
         }
+
+
+
+        
+
+
+
+
 
 
 
@@ -147,35 +157,51 @@ namespace TechMarket.Controllers
         public IActionResult EditProduct(Product updateProduct, IFormFile newImage)
         {
             Product product = _dbContext.Products.FirstOrDefault(st => st.ProdId == updateProduct.ProdId);
+
             if (product != null)
             {
                 product.ProdName = updateProduct.ProdName;
                 product.ProdDesc = updateProduct.ProdDesc;
                 product.ProdTags = updateProduct.ProdTags;
                 product.ProdPrice = updateProduct.ProdPrice;
+
                 if (newImage != null)
                 {
-                    if (!string.IsNullOrEmpty(product.ProdImageURL))
+                    // Check if the old image path is not empty and the file exists
+                    if (!string.IsNullOrEmpty(product.ProdImageURL) && System.IO.File.Exists(product.ProdImageURL))
                     {
-                        string oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, product.ProdImageURL);
-                        if (System.IO.File.Exists(oldImagePath))
+                        // Dispose of any existing FileStream associated with the file
+                        using (var existingFileStream = System.IO.File.Open(product.ProdImageURL, FileMode.Open, FileAccess.ReadWrite, FileShare.Delete))
                         {
-                            System.IO.File.Delete(oldImagePath);
+                            // FileShare.Delete allows deleting the file even if it's open in another process
                         }
+
+                        // Delete the old image file
+                        System.IO.File.Delete(product.ProdImageURL);
                     }
+
+                    // Generate a unique file name for the new image
                     string folder = "products/image/";
-                    folder += Guid.NewGuid().ToString() + "_" + newImage.FileName;
-                    product.ProdImageURL = folder;
-                    string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
-                    using (var stream = new FileStream(serverFolder, FileMode.Create))
+                    string newImageFileName = $"{Guid.NewGuid()}_{newImage.FileName}";
+                    string newImagePath = Path.Combine(_webHostEnvironment.WebRootPath, folder, newImageFileName);
+
+                    // Save the new image to the server
+                    using (var stream = new FileStream(newImagePath, FileMode.Create))
                     {
                         newImage.CopyTo(stream);
                     }
+
+                    // Update the product with the new image path
+                    product.ProdImageURL = Path.Combine(folder, newImageFileName);
                 }
             }
+
+            // Save changes to the database
             _dbContext.SaveChanges();
+
             return RedirectToAction("Index");
         }
+
 
         [HttpGet]
         public IActionResult DeleteProduct(int id)

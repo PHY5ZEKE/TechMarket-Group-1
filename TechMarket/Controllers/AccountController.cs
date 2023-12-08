@@ -46,10 +46,6 @@ namespace TechMarket.Controllers
 
             if (result.Succeeded)
             {
-
-
-                // Check if the user is authenticated
-
             
                 return RedirectToAction("Index", "Product");
             }
@@ -152,11 +148,7 @@ namespace TechMarket.Controllers
 
             return View(userEnteredData);
         }
-
-
-
-
-
+        [HttpGet]
         public IActionResult EditAccount(Guid id)
         {
 
@@ -205,6 +197,99 @@ namespace TechMarket.Controllers
 
             return NotFound();
         }
+        public IActionResult EditUser(Guid id)
+        {
+            User? user = _userManager.Users.FirstOrDefault(u => u.Id == id.ToString());
+
+            if (user != null)
+            {
+                return View(user);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult EditUser(User updateAccount, IFormFile profilePicture)
+        {
+            // Get the user by Id
+            User user = _userManager.FindByIdAsync(updateAccount.Id).Result;
+
+            if (user != null)
+            {
+                try
+                {
+                    // Update user properties
+                    user.Email = updateAccount.Email;
+                    user.Phone = updateAccount.Phone;
+
+                    // Update profile picture if provided
+                    if (profilePicture != null)
+                    {
+                        // Delete the existing profile picture if it exists
+                        if (!string.IsNullOrEmpty(user.ProfilePictureUrl) && System.IO.File.Exists(user.ProfilePictureUrl))
+                        {
+                            try
+                            {
+                                System.IO.File.Delete(user.ProfilePictureUrl);
+                            }
+                            catch (Exception deleteException)
+                            {
+                                ModelState.AddModelError(string.Empty, $"Error deleting existing profile picture: {deleteException.Message}");
+                                return View(updateAccount);
+                            }
+                        }
+
+                        // Generate a unique file name for the new profile picture
+                        var profilePictureFileName = $"{Guid.NewGuid()}_{profilePicture.FileName}";
+                        var profilePicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "profile", "pfp", profilePictureFileName);
+
+                        // Save the new profile picture to the server
+                        using (var stream = new FileStream(profilePicturePath, FileMode.Create))
+                        {
+                            profilePicture.CopyTo(stream);
+                        }
+
+                        // Update the user with the new profile picture path
+                        user.ProfilePictureUrl = $"profile/pfp/{profilePictureFileName}";
+                    }
+
+                    // Update password if provided
+                    if (!string.IsNullOrEmpty(updateAccount.PasswordHash))
+                    {
+                        var newPasswordHash = _userManager.PasswordHasher.HashPassword(user, updateAccount.PasswordHash);
+                        user.PasswordHash = newPasswordHash;
+                    }
+
+                    // Update the user using UserManager
+                    var result = _userManager.UpdateAsync(user).Result;
+
+                    if (result.Succeeded)
+                    {
+                        // Update session variables
+                        HttpContext.Session.SetString("Email", user.Email);
+                        HttpContext.Session.SetString("Phone", user.Phone);
+                        HttpContext.Session.SetString("ProfilePictureUrl", user.ProfilePictureUrl);
+                        HttpContext.Session.SetString("IdPictureUrl", user.IdPictureUrl);
+
+                        return RedirectToAction("Profile");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Error updating user information.");
+                        return View(updateAccount);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, $"Error: {ex.Message}");
+                    return View(updateAccount);
+                }
+            }
+
+            return NotFound();
+        }
+
+
 
         [HttpGet]
         public IActionResult DeleteAccount(Guid id)
