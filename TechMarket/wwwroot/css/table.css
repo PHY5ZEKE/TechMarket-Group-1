@@ -34,6 +34,10 @@ h2{
 	font-family: 'Poppins';
 	color: #ffffff;
 }
+p {
+	font-family: 'Poppins';
+	color: #ffffff;
+}
 table {
 	width: 100%;
 	height: 100%;
@@ -63,6 +67,17 @@ thead {
 	th {
 		background-color: #021568;
 	}
+}
+.btn {
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
 }
 /*td {
     position: relative;
