@@ -1,49 +1,119 @@
 ﻿@model TechMarket.Models.ToReceiveProduct
 
+<style>
+    body {
+        margin-left: 220px;
+        background-color: #f8f9fa;
+        color: #343a40;
+    }
+
+    h1 {
+        color: #007bff;
+        font-weight: bolder;
+        margin-left: 20px;
+    }
+
+    .product-container {
+        margin: 20px;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .details-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .details {
+        width: 48%; /* 48% width for each column with a small gap in between */
+    }
+
+        .details dl {
+            margin: 0;
+        }
+
+        .details dt {
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+
+        .details dd {
+            margin-bottom: 15px;
+        }
+
+    .product-image {
+        max-width: 200px;
+        max-height: 200px;
+        float: left;
+        margin-right: 20px;
+    }
+
+    .btn-back {
+        margin-left: 20px;
+        margin-top: 20px;
+        clear: both;
+    }
+</style>
+
 <h1>Products To Receive</h1>
 
 @if (Model != null)
 {
-    <dl class="row">
-        <dt class="col-sm-2">Product Name:</dt>
-        <dd class="col-sm-10">@Model.ProductName</dd>
+    <div class="product-container row">
+        <div class="details-container">
+            <div class="details">
+                <dl class="row">
+                    <dt class="col-sm-2">Product Name:</dt>
+                    <dd class="col-sm-10">@Model.ProductName</dd>
 
-        <dt class="col-sm-2">Image:</dt>
-        <dd class="col-sm-10">
-            @if (!string.IsNullOrEmpty(Model.ProductImageURL))
-            {
-                <img src="~/@Model.ProductImageURL" alt="Product Image" style="max-width: 200px; max-height: 200px;" />
-            }
-            else
-            {
-                <span>No Image Available</span>
-            }
-        </dd>
+                    <dt class="col-sm-2">Image:</dt>
+                    <dd class="col-sm-10">
+                        @if (!string.IsNullOrEmpty(Model.ProductImageURL))
+                        {
+                            <img src="~/@Model.ProductImageURL" alt="Product Image" style="max-width: 200px; max-height: 200px;" />
+                        }
+                        else
+                        {
+                            <span>No Image Available</span>
+                        }
+                    </dd>
 
-        <dt class="col-sm-2">Description:</dt>
-        <dd class="col-sm-10">@Model.ProductDescription</dd>
+                    <dt class="col-sm-2">Description:</dt>
+                    <dd class="col-sm-10">@Model.ProductDescription</dd>
+                </dl>
+            </div>
 
-        <dt class="col-sm-2">Price:</dt>
-        <dd class="col-sm-10">@Model.ProductPrice</dd>
+            <div class="details">
+                <dl class="row">
+                    <dt class="col-sm-2">Price:</dt>
+                    <dd class="col-sm-10">@Model.ProductPrice</dd>
 
-        <dt class="col-sm-2">Purchase Date:</dt>
-        <dd class="col-sm-10">@Model.PurchaseDate</dd>
+                    <dt class="col-sm-2">Purchase Date:</dt>
+                    <dd class="col-sm-10">@Model.PurchaseDate</dd>
 
-        <dt class="col-sm-2">Seller Name:</dt>
-        <dd class="col-sm-10"> <a asp-controller="Product" asp-action="SellerInformation" asp-route-sellerId="@Model.SellerId">
+                    <dt class="col-sm-2">Seller Name:</dt>
+                    <dd class="col-sm-10">
+                        <a asp-controller="Product" asp-action="SellerInformation" asp-route-sellerId="@Model.SellerId">
                             @Model.SellerName
-                        </a> </dd>
+                        </a>
+                    </dd>
 
-        <dt class="col-sm-2">Seller Email:</dt>
-        <dd class="col-sm-10">@Model.SellerEmail</dd>
+                    <dt class="col-sm-2">Seller Email:</dt>
+                    <dd class="col-sm-10">@Model.SellerEmail</dd>
 
-        <dt class="col-sm-2">Seller Contact:</dt>
-        <dd class="col-sm-10">@Model.SellerContact</dd>
-    </dl>
+                    <dt class="col-sm-2">Seller Contact:</dt>
+                    <dd class="col-sm-10">@Model.SellerContact</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <a asp-action="ToReceive" class="btn btn-primary btn-back">Back</a>
 }
 else
 {
-    <p>No details available for the selected purchased product.</p>
+    <p>No details available for the selected product to receive.</p>
 }
-
-<a asp-action="ToReceive" class="btn btn-primary">Back</a>

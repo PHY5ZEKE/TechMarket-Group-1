@@ -1,37 +1,58 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model TechMarket.Data.User
+﻿@model TechMarket.Data.User
+
+<style>
+    body {
+        margin-left: 220px;
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+
+    h1 {
+        color: #007bff;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .user-details {
+        width: 100%;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .details-label {
+        font-weight: bold;
+    }
+
+    .details-value {
+        margin-bottom: 10px;
+    }
+</style>
 
 <h1>Account Details</h1>
 
-<table class="table table-dark">
-    <tr>
-        <th>Last Name</th>
-        <td>@Model.LastName</td>
-    </tr>
-    <tr>
-        <th>First Name</th>
-        <td>@Model.FirstName</td>
-    </tr>
-    <tr>
-        <th>Email</th>
-        <td>@Model.Email</td>
-    </tr>
-    <tr>
-        <th>Username</th>
-        <td>@Model.UserName</td>
-    </tr>
-    <tr>
-        <th>Birthday</th>
-        <td>@Model.Birthday</td>
-    </tr>
-    <tr>
-        <th>Birthday</th>
-        <td>@Model.Address</td>
-    </tr>
-    <tr>
-        <th>Contact</th>
-        <td>@Model.Phone</td>
-    </tr>
-</table>
+<div class="user-details">
+    <div class="details-label">Last Name:</div>
+    <div class="details-value">@Model.LastName</div>
+
+    <div class="details-label">First Name:</div>
+    <div class="details-value">@Model.FirstName</div>
+
+    <div class="details-label">Email:</div>
+    <div class="details-value">@Model.Email</div>
+
+    <div class="details-label">Username:</div>
+    <div class="details-value">@Model.UserName</div>
+
+    <div class="details-label">Birthday:</div>
+    <div class="details-value">@Model.Birthday</div>
+
+    <div class="details-label">Address:</div>
+    <div class="details-value">@Model.Address</div>
+
+    <div class="details-label">Contact:</div>
+    <div class="details-value">@Model.Phone</div>
+    <button type="button" class="btn btn-secondary" onclick="history.back();">Back</button>
+</div>

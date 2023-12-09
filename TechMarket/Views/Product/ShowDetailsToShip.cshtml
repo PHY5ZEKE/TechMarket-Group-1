@@ -1,50 +1,112 @@
 ﻿@model TechMarket.Models.ToShipProduct
+<style>
+    body {
+        margin-left: 220px;
+        background-color: #f8f9fa;
+        color: #343a40;
+    }
+
+    h1 {
+        color: #007bff;
+        font-weight: bolder;
+        margin-left: 20px;
+    }
+
+    .product-container {
+        margin: 20px;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .product-image {
+        max-width: 400px;
+        max-height: 400px;
+        float: left;
+        margin-right: 20px;
+    }
+
+    .product-details,
+    .buyer-details {
+        float: left;
+        width: calc(50% - 20px); /* 50% width with 20px spacing between columns */
+    }
+
+        .product-details dl,
+        .buyer-details dl {
+            margin: 0;
+        }
+
+        .product-details dt,
+        .buyer-details dt {
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+
+        .product-details dd,
+        .buyer-details dd {
+            margin-bottom: 15px;
+        }
+
+    .btn-back {
+        margin-left: 20px;
+        margin-top: 20px;
+        clear: both;
+    }
+</style>
 
 <h1>Products To Ship</h1>
 
 @if (Model != null)
 {
-    <dl class="row">
-        <dt class="col-sm-2">Product Name:</dt>
-        <dd class="col-sm-10">@Model.ProductName</dd>
+    <div class="product-container row">
+        @if (!string.IsNullOrEmpty(Model.ProductImageURL))
+        {
+            <img class="product-image col-sm" src="~/@Model.ProductImageURL" alt="Product Image" />
+        }
+        else
+        {
+            <span>No Image Available</span>
+        }
 
-        <dt class="col-sm-2">Image:</dt>
-        <dd class="col-sm-10">
-            @if (!string.IsNullOrEmpty(Model.ProductImageURL))
-            {
-                <img src="~/@Model.ProductImageURL" alt="Product Image" style="max-width: 200px; max-height: 200px;" />
-            }
-            else
-            {
-                <span>No Image Available</span>
-            }
-        </dd>
+        <div class="product-details col-sm">
+            <dl>
+                <dt>Product Name:</dt>
+                <dd class="name">@Model.ProductName</dd>
 
-        <dt class="col-sm-2">Description:</dt>
-        <dd class="col-sm-10">@Model.ProductDescription</dd>
+                <dt>Description:</dt>
+                <dd>@Model.ProductDescription</dd>
 
-        <dt class="col-sm-2">Price:</dt>
-        <dd class="col-sm-10">@Model.ProductPrice</dd>
+                <dt>Price:</dt>
+                <dd>@Model.ProductPrice</dd>
 
-        <dt class="col-sm-2">Purchase Date:</dt>
-        <dd class="col-sm-10">@Model.PurchaseDate</dd>
+                <dt>Purchase Date:</dt>
+                <dd>@Model.PurchaseDate</dd>
+            </dl>
+        </div>
 
-        <dt class="col-sm-2">Buyer Name:</dt>
-        <dd class="col-sm-10">@Model.BuyerName </dd>
+        <div class="buyer-details col-sm">
+            <dl>
+                <dt>Buyer Name:</dt>
+                <dd>@Model.BuyerName</dd>
 
-        <dt class="col-sm-2">Address:</dt>
-        <dd class="col-sm-10">@Model.BuyerAddress</dd>
+                <dt>Address:</dt>
+                <dd>@Model.BuyerAddress</dd>
 
-        <dt class="col-sm-2">Buyer Email:</dt>
-        <dd class="col-sm-10">@Model.BuyerEmail</dd>
+                <dt>Buyer Email:</dt>
+                <dd>@Model.BuyerEmail</dd>
 
-        <dt class="col-sm-2">Buyer Contact:</dt>
-        <dd class="col-sm-10">@Model.BuyerContact</dd>
-    </dl>
+                <dt>Buyer Contact:</dt>
+                <dd>@Model.BuyerContact</dd>
+            </dl>
+        </div>
+    </div>
+
+    <a asp-action="ToShip" class="btn btn-primary btn-back">Back</a>
 }
 else
 {
     <p>No details available for the selected purchased product.</p>
 }
-
-<a asp-action="ToShip" class="btn btn-primary">Back</a>
