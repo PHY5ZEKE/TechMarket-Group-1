@@ -1,7 +1,5 @@
-﻿@{
-    var profilePictureUrl = Context.Session.GetString("ProfilePictureUrl");
-    var idPictureUrl = Context.Session.GetString("IdPictureUrl");
-}
+﻿
+
 
 <div class="container">
     <div class="main-body">
@@ -11,18 +9,18 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-                            <img src="~/@Url.Content(profilePictureUrl)" alt="Profile Picture" class="rounded-circle" width="150">
+                            <img src="~/@Model.SellerPfp" alt="Profile Picture" class="rounded-circle" width="150">
                             <div class="mt-3">
-                                <h4>@Context.Session.GetString("UserName")</h4>
-                                <p class="text-secondary mb-1">@Context.Session.GetString("FirstName") @Context.Session.GetString("LastName")</p>
+                                <h4>@Model.Seller</h4>
+                                <p class="text-secondary mb-1">@Model.SellerFName @Model.SellerLName</p>
                             </div>
                         </div>
                         <div class="mt-3">
-                            <center><a class="btn btn-primary" href="#" onclick="showIdPictureModal()">View ID</a></center>
+                            <center> <a class="btn btn-primary" href="#" onclick="showIdPictureModal()">View ID</a></center>
                         </div>
                     </div>
                 </div>
-               
+                
             </div>
 
 
@@ -35,7 +33,7 @@
                                 <h6 class="mb-0">First Name</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                @Context.Session.GetString("FirstName")
+                                @Model.SellerFName
                             </div>
                         </div>
                         <hr>
@@ -44,7 +42,7 @@
                                 <h6 class="mb-0">Last Name</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                @Context.Session.GetString("LastName")
+                                @Model.SellerLName
                             </div>
                         </div>
 
@@ -54,7 +52,7 @@
                                 <h6 class="mb-0">Email</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                @Context.Session.GetString("Email")
+                                @Model.SellerEmail
                             </div>
                         </div>
                         <hr>
@@ -63,33 +61,16 @@
                                 <h6 class="mb-0">Contact</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                @Context.Session.GetString("Phone")
+                                @Model.SellerContact
                             </div>
                         </div>
                         <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Address</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                @Context.Session.GetString("Address")
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Birthdate</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                @Context.Session.GetString("Birthday")
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <center><a class="btn btn-info" asp-controller ="Account" asp-action="EditUser" asp-route-id="@Context.Session.GetString("Id")">Edit</a></center>
-                            </div>
-                        </div>
+
+                        <center>
+                            <a class="btn btn-primary" href="@Url.Action("Reviews", "Product", new { sellerId = Model.AcctId })">Leave a Review</a>
+                        </center>
+
+                        
                     </div>
                 </div>
             </div>
@@ -108,7 +89,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <img src="~/@Url.Content(idPictureUrl)" alt="ID Picture" class="img-fluid">
+                <img src="~/@Model.SellerID" alt="ID Picture" class="img-fluid">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeIdPictureModal()">Close</button>
@@ -125,10 +106,3 @@
         $('#idPictureModal').modal('hide');
     }
 </script>
-   
-    
-
-
- 
-
-

@@ -11,7 +11,9 @@ namespace TechMarket.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Purchases> PurchasedProducts { get; set; }
         public DbSet<ToShipProduct> ToShipProducts { get; set; }
-        public DbSet<ToReceiveProduct> ToReceiveProducts { get; set; } 
+        public DbSet<ToReceiveProduct> ToReceiveProducts { get; set; }
+
+        public DbSet<Review> Reviews { get; set; }
 
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }

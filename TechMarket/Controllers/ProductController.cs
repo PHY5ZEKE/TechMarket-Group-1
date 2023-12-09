@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Http;
 using TechMarket.Data;
 using TechMarket.Models;
 using Stripe.Checkout;
@@ -38,6 +38,7 @@ namespace TechMarket.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var loggedInUser = _userManager.GetUserAsync(User).Result;
+                HttpContext.Session.SetString("Id", loggedInUser.Id);
                 HttpContext.Session.SetString("UserName", loggedInUser.UserName);
                 HttpContext.Session.SetString("Address", loggedInUser.Address);
                 HttpContext.Session.SetString("FirstName", loggedInUser.FirstName);
@@ -63,22 +64,36 @@ namespace TechMarket.Controllers
                     EF.Functions.Like(p.ProdDesc, $"%{searchQuery}%"));
             }
 
-            if (User.Identity.IsAuthenticated)
-            {
-                var loggedInUser = _userManager.GetUserAsync(User).Result;
-                HttpContext.Session.SetString("UserName", loggedInUser.UserName);
-                HttpContext.Session.SetString("Address", loggedInUser.Address);
-                HttpContext.Session.SetString("FirstName", loggedInUser.FirstName);
-                HttpContext.Session.SetString("LastName", loggedInUser.LastName);
-                HttpContext.Session.SetString("Email", loggedInUser.Email);
-                HttpContext.Session.SetString("Phone", loggedInUser.Phone);
-                HttpContext.Session.SetString("Birthday", loggedInUser.Birthday.ToString());
-                HttpContext.Session.SetString("ProfilePictureUrl", loggedInUser.ProfilePictureUrl);
-                HttpContext.Session.SetString("IdPictureUrl", loggedInUser.IdPictureUrl);
-            }
+            
 
             return View(products.ToList());
         }
+
+
+        public IActionResult SellerInformation(string sellerId)
+        {
+            // Fetch seller information based on sellerId
+            // You can use _userManager or your data access logic to retrieve seller details
+
+            // Example: Fetch seller details from the database
+            var seller = _dbContext.Products.FirstOrDefault(u => u.AcctId == Guid.Parse(sellerId));
+
+            if (seller == null)
+            {
+                // Handle the case where the seller is not found
+                return NotFound();
+            }
+
+            return View(seller); // Pass the seller details to the view
+        }
+
+
+
+        
+
+
+
+
 
 
 
@@ -109,6 +124,10 @@ namespace TechMarket.Controllers
                 newProduct.Seller = user.UserName;
                 newProduct.SellerEmail = user.Email;
                 newProduct.SellerContact = user.Phone;
+                newProduct.SellerFName = user.FirstName;
+                newProduct.SellerLName = user.LastName;
+                newProduct.SellerPfp = user.ProfilePictureUrl;
+                newProduct.SellerID = user.IdPictureUrl;
                 if (newProduct.ProdImage != null)
                 {
                     string folder = "products/image/";
@@ -138,35 +157,51 @@ namespace TechMarket.Controllers
         public IActionResult EditProduct(Product updateProduct, IFormFile newImage)
         {
             Product product = _dbContext.Products.FirstOrDefault(st => st.ProdId == updateProduct.ProdId);
+
             if (product != null)
             {
                 product.ProdName = updateProduct.ProdName;
                 product.ProdDesc = updateProduct.ProdDesc;
                 product.ProdTags = updateProduct.ProdTags;
                 product.ProdPrice = updateProduct.ProdPrice;
+
                 if (newImage != null)
                 {
-                    if (!string.IsNullOrEmpty(product.ProdImageURL))
+                    // Check if the old image path is not empty and the file exists
+                    if (!string.IsNullOrEmpty(product.ProdImageURL) && System.IO.File.Exists(product.ProdImageURL))
                     {
-                        string oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, product.ProdImageURL);
-                        if (System.IO.File.Exists(oldImagePath))
+                        // Dispose of any existing FileStream associated with the file
+                        using (var existingFileStream = System.IO.File.Open(product.ProdImageURL, FileMode.Open, FileAccess.ReadWrite, FileShare.Delete))
                         {
-                            System.IO.File.Delete(oldImagePath);
+                            // FileShare.Delete allows deleting the file even if it's open in another process
                         }
+
+                        // Delete the old image file
+                        System.IO.File.Delete(product.ProdImageURL);
                     }
+
+                    // Generate a unique file name for the new image
                     string folder = "products/image/";
-                    folder += Guid.NewGuid().ToString() + "_" + newImage.FileName;
-                    product.ProdImageURL = folder;
-                    string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
-                    using (var stream = new FileStream(serverFolder, FileMode.Create))
+                    string newImageFileName = $"{Guid.NewGuid()}_{newImage.FileName}";
+                    string newImagePath = Path.Combine(_webHostEnvironment.WebRootPath, folder, newImageFileName);
+
+                    // Save the new image to the server
+                    using (var stream = new FileStream(newImagePath, FileMode.Create))
                     {
                         newImage.CopyTo(stream);
                     }
+
+                    // Update the product with the new image path
+                    product.ProdImageURL = Path.Combine(folder, newImageFileName);
                 }
             }
+
+            // Save changes to the database
             _dbContext.SaveChanges();
+
             return RedirectToAction("Index");
         }
+
 
         [HttpGet]
         public IActionResult DeleteProduct(int id)
@@ -315,44 +350,8 @@ namespace TechMarket.Controllers
             Session session = service.Create(options);
             TempData["Session"] = session.Id;
 
-            var loggedInUser = _userManager.GetUserAsync(User).Result;
-            var purchasedProduct = new Purchases
-            {
-                PurchaserId = loggedInUser.Id,
-                ProductId = selectedProduct.ProdId,
-                PurchaseDate = DateTime.UtcNow,
-                ProductName = selectedProduct.ProdName, // Add product name
-                ProductImageURL = selectedProduct.ProdImageURL, // Add product image URL
-                ProductPrice = selectedProduct.ProdPrice, // Add product price
-                ProductDescription = selectedProduct.ProdDesc,
-            };
-            var toShipProduct = new ToShipProduct
-            {
-                BuyerId = loggedInUser.Id, // Add the buyer's ID
-                BuyerAddress = loggedInUser.Address, // Add the buyer's address
-                BuyerEmail = loggedInUser.Email,
-                BuyerName = loggedInUser.FirstName+" " +loggedInUser.LastName,
-                BuyerContact = loggedInUser.Phone,
-                SellerId = selectedProduct.AcctId,
-                SellerName = selectedProduct.Seller,
-                SellerEmail = selectedProduct.SellerEmail,
-                SellerContact = selectedProduct.SellerContact,
-                ProductId = selectedProduct.ProdId,
-                PurchaseDate = DateTime.UtcNow,
-                ProductName = selectedProduct.ProdName, // Add product name
-                ProductImageURL = selectedProduct.ProdImageURL, // Add product image URL
-                ProductPrice = selectedProduct.ProdPrice, // Add product price
-                ProductDescription = selectedProduct.ProdDesc,
-            };
-            _dbContext.ToShipProducts.Add(toShipProduct);
-            _dbContext.PurchasedProducts.Add(purchasedProduct);
-            _dbContext.SaveChanges();
-            var productToDelete = _dbContext.Products.FirstOrDefault(p => p.ProdId == selectedProduct.ProdId);
-            if (productToDelete != null)
-            {
-                _dbContext.Products.Remove(productToDelete);
-                _dbContext.SaveChanges();
-            }
+           
+          
 
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
@@ -360,15 +359,79 @@ namespace TechMarket.Controllers
 
         public IActionResult OrderConfirmation()
         {
+            var sessionId = TempData["Session"]?.ToString();
+
+            if (string.IsNullOrEmpty(sessionId))
+            {
+                // Handle the case where the session ID is missing or invalid
+                return View("Failure");
+            }
+
             var service = new SessionService();
-            Session session = service.Get(TempData["Session"].ToString());
+            Session session = service.Get(sessionId);
+
             if (session.PaymentStatus == "paid")
             {
-                var transaction = session.PaymentIntentId.ToString();
+                // Retrieve selectedProduct again
+                var selectedProduct = HttpContext.Session.GetObject<Product>("SelectedProduct");
+
+                if (selectedProduct == null)
+                {
+                    // Handle the case where the selected product is missing
+                    return View("Failure");
+                }
+
+                var loggedInUser = _userManager.GetUserAsync(User).Result;
+
+                var purchasedProduct = new Purchases
+                {
+                    PurchaserId = loggedInUser.Id,
+                    ProductId = selectedProduct.ProdId,
+                    SellerId = selectedProduct.AcctId,
+                    Seller = selectedProduct.Seller,
+                    PurchaseDate = DateTime.UtcNow,
+                    ProductName = selectedProduct.ProdName,
+                    ProductImageURL = selectedProduct.ProdImageURL,
+                    ProductPrice = selectedProduct.ProdPrice,
+                    ProductDescription = selectedProduct.ProdDesc,
+                };
+
+                var toShipProduct = new ToShipProduct
+                {
+                    BuyerId = loggedInUser.Id,
+                    BuyerAddress = loggedInUser.Address,
+                    BuyerEmail = loggedInUser.Email,
+                    BuyerName = loggedInUser.FirstName + " " + loggedInUser.LastName,
+                    BuyerContact = loggedInUser.Phone,
+                    SellerId = selectedProduct.AcctId,
+                    SellerName = selectedProduct.Seller,
+                    SellerEmail = selectedProduct.SellerEmail,
+                    SellerContact = selectedProduct.SellerContact,
+                    ProductId = selectedProduct.ProdId,
+                    PurchaseDate = DateTime.UtcNow,
+                    ProductName = selectedProduct.ProdName,
+                    ProductImageURL = selectedProduct.ProdImageURL,
+                    ProductPrice = selectedProduct.ProdPrice,
+                    ProductDescription = selectedProduct.ProdDesc,
+                };
+
+                _dbContext.ToShipProducts.Add(toShipProduct);
+                _dbContext.PurchasedProducts.Add(purchasedProduct);
+                _dbContext.SaveChanges();
+
+                var productToDelete = _dbContext.Products.FirstOrDefault(p => p.ProdId == selectedProduct.ProdId);
+                if (productToDelete != null)
+                {
+                    _dbContext.Products.Remove(productToDelete);
+                    _dbContext.SaveChanges();
+                }
+
                 return View("Success");
             }
+
             return View("Failure");
         }
+
 
         public IActionResult Success()
         {
@@ -390,6 +453,20 @@ namespace TechMarket.Controllers
                     .ToList();
 
                 return View(userPurchases);
+            }
+
+            return RedirectToAction("Index"); // Redirect to the product listing if the user is not logged in
+        }
+        public IActionResult Sold()
+        {
+            var loggedInUser = _userManager.GetUserAsync(User).Result;
+            if (loggedInUser != null)
+            {
+                var userSold = _dbContext.PurchasedProducts
+                    .Where(p => p.SellerId == Guid.Parse(loggedInUser.Id))
+                    .ToList();
+
+                return View(userSold);
             }
 
             return RedirectToAction("Index"); // Redirect to the product listing if the user is not logged in
@@ -571,12 +648,3 @@ namespace TechMarket.Controllers
         }
     }
 }
-
-
-
-
-
-
-
-
-
