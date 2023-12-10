@@ -1,13 +1,16 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model Product
+﻿@model Product
 <link rel="stylesheet" href="~/css/listing.css">
+<!-- Include jQuery and the unobtrusive validation library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation.unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
 <div class="primary_main">
     <div class="listing_main">
         <h1 class="text-center">Product Listing</h1>
         <div class="listing_prim"></div>
-        <form asp-action="AddProduct" enctype="multipart/form-data" method="post">
+        <form asp-action="AddProduct" enctype="multipart/form-data" method="post" onsubmit="return validateForm()">
             <div class="listing_left">
                 <div class="form-group">
                     <h5 class="fw-bolder">Upload Files</h5>
@@ -56,3 +59,75 @@
         </form>
     </div>
 </div>
+<script>
+    function validateForm() {
+        // Get form values
+        var prodName = document.getElementById('ProdName').value;
+        var prodDesc = document.getElementById('ProdDesc').value;
+        var prodTags = document.getElementById('ProdTags').value;
+        var prodPrice = document.getElementById('ProdPrice').value;
+        var prodImage = document.getElementById('file').value;
+
+        // Validate Product Name
+        if (prodName.trim() === '') {
+            showError('Product Name is required.');
+            return false;
+        }
+        if (prodName.length > 60) {
+            showError('Product Name cannot exceed 60 characters.');
+            return false;
+        }
+
+        // Validate Product Description
+        if (prodDesc.trim() === '') {
+            showError('Product Description is required.');
+            return false;
+        }
+        if (prodDesc.length > 150) {
+            showError('Product Description cannot exceed 150 characters.');
+            return false;
+        }
+
+        // Validate Product Category
+        if (prodTags.trim() === '') {
+            showError('Product Category is required.');
+            return false;
+        }
+
+        // Validate Product Price
+        if (prodPrice.trim() === '') {
+            showError('Product Price is required.');
+            return false;
+        }
+        var parsedPrice = parseInt(prodPrice, 10);
+        if (isNaN(parsedPrice) || parsedPrice < 50 || parsedPrice > 999999) {
+            showError('Product Price must be a valid integer between 50 and 999999.');
+            return false;
+        }
+
+        // Validate Product Image
+        if (prodImage.trim() === '') {
+            showError('Product Image is required.');
+            return false;
+        }
+        var allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
+        var extension = prodImage.substring(prodImage.lastIndexOf('.')).toLowerCase();
+        if (!allowedExtensions.includes(extension)) {
+            showError('Allowed file extensions are: ' + allowedExtensions.join(', '));
+            return false;
+        }
+
+        // If all validations pass, return true to submit the form
+        return true;
+    }
+
+    function showError(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: message,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'OK'
+        });
+    }
+</script>
