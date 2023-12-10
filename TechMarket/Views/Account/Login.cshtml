@@ -1,4 +1,4 @@
-﻿@model TechMarket.ViewModels.LoginViewModel;
+﻿@model TechMarket.ViewModels.LoginViewModel
 
 <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
 <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
@@ -6,6 +6,7 @@
 @{
     String label = "If you have an account, sign in with your email address.";
 }
+
 <style>
     body {
         margin: 0;
@@ -35,10 +36,12 @@
             <div class="form-group">
                 <label asp-for="UserName">Username</label>
                 <input asp-for="UserName" placeholder="Your Username" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password">Password</label>
                 <input asp-for="Password" type="password" placeholder="Your Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <br />
             <div>

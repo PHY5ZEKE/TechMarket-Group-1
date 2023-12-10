@@ -42,20 +42,27 @@ namespace TechMarket.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginInfo)
         {
+            if (!ModelState.IsValid)
+            {
+                // If model state is not valid, return the view with validation errors
+                return View(loginInfo);
+            }
+
             var result = await _signInManager.PasswordSignInAsync(loginInfo.UserName, loginInfo.Password, loginInfo.RememberMe, false);
 
             if (result.Succeeded)
             {
-            
                 return RedirectToAction("Index", "Product");
             }
             else
             {
+                // If login fails, add an error message
                 ModelState.AddModelError("", "Failed to Login");
+                return View(loginInfo);
             }
-            var products = _dbContext.Products.ToList();
-            return View(loginInfo);
         }
+
+
 
         public async Task<IActionResult> Logout()
         {
