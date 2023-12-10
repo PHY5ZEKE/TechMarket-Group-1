@@ -57,7 +57,7 @@ namespace TechMarket.Controllers
             else
             {
                 // If login fails, add an error message
-                ModelState.AddModelError("", "Failed to Login");
+                ModelState.AddModelError("", "Invalid username or password. Please try again.");
                 return View(loginInfo);
             }
         }
@@ -92,70 +92,87 @@ namespace TechMarket.Controllers
         {
             return View("Register");
         }
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel userEnteredData)
         {
-            
-
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                // Check if username is taken
+                var userNameExists = await _userManager.FindByNameAsync(userEnteredData.UserName);
+                if (userNameExists != null)
                 {
+                    ModelState.AddModelError("UserName", "Username is already taken.");
+                    return View("Register", userEnteredData);
+                }
+
+                // Check if email is taken
+                var emailExists = await _userManager.FindByEmailAsync(userEnteredData.Email);
+                if (emailExists != null)
+                {
+                    ModelState.AddModelError("Email", "Email address is already taken.");
+                    return View("Register", userEnteredData);
+                }
+
+                // Continue with user registration
                 string address = $"{userEnteredData.BuildingNumber}, {userEnteredData.StreetName}, {userEnteredData.Barangay}, {userEnteredData.CityOrMunicipality}, {userEnteredData.Province}, {userEnteredData.PostalCode}";
-                 User newUser = new User();
-                    newUser.UserName = userEnteredData.UserName;
-                    newUser.FirstName = userEnteredData.FirstName;
-                    newUser.LastName = userEnteredData.LastName;
-                    newUser.Email = userEnteredData.Email;
-                    newUser.Phone = userEnteredData.Phone;
-                    newUser.Birthday = userEnteredData.Birthday;
+                User newUser = new User();
+                newUser.UserName = userEnteredData.UserName;
+                newUser.FirstName = userEnteredData.FirstName;
+                newUser.LastName = userEnteredData.LastName;
+                newUser.Email = userEnteredData.Email;
+                newUser.Phone = userEnteredData.Phone;
+                newUser.Birthday = userEnteredData.Birthday;
                 newUser.Address = address;
 
-                    // Check and save profile picture
-                    if (userEnteredData.ProfilePicture != null && userEnteredData.ProfilePicture.Length > 0)
+                // Check and save profile picture
+                if (userEnteredData.ProfilePicture != null && userEnteredData.ProfilePicture.Length > 0)
+                {
+                    var profilePictureFileName = $"{Guid.NewGuid()}_{userEnteredData.ProfilePicture.FileName}";
+                    var profilePicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "profile", "pfp", profilePictureFileName);
+
+                    using (var stream = new FileStream(profilePicturePath, FileMode.Create))
                     {
-                        var profilePictureFileName = $"{Guid.NewGuid()}_{userEnteredData.ProfilePicture.FileName}";
-                        var profilePicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "profile", "pfp", profilePictureFileName);
-
-                        using (var stream = new FileStream(profilePicturePath, FileMode.Create))
-                        {
-                            await userEnteredData.ProfilePicture.CopyToAsync(stream);
-                        }
-
-                        newUser.ProfilePictureUrl = $"profile/pfp/{profilePictureFileName}";
+                        await userEnteredData.ProfilePicture.CopyToAsync(stream);
                     }
 
-                    // Check and save ID picture
-                    if (userEnteredData.IdPicture != null && userEnteredData.IdPicture.Length > 0)
+                    newUser.ProfilePictureUrl = $"profile/pfp/{profilePictureFileName}";
+                }
+
+                // Check and save ID picture
+                if (userEnteredData.IdPicture != null && userEnteredData.IdPicture.Length > 0)
+                {
+                    var idPictureFileName = $"{Guid.NewGuid()}_{userEnteredData.IdPicture.FileName}";
+                    var idPicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "profile", "id", idPictureFileName);
+
+                    using (var stream = new FileStream(idPicturePath, FileMode.Create))
                     {
-                        var idPictureFileName = $"{Guid.NewGuid()}_{userEnteredData.IdPicture.FileName}";
-                        var idPicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "profile", "id", idPictureFileName);
-
-                        using (var stream = new FileStream(idPicturePath, FileMode.Create))
-                        {
-                            await userEnteredData.IdPicture.CopyToAsync(stream);
-                        }
-
-                        newUser.IdPictureUrl = $"profile/id/{idPictureFileName}";
+                        await userEnteredData.IdPicture.CopyToAsync(stream);
                     }
 
-                    var result = await _userManager.CreateAsync(newUser, userEnteredData.Password);
+                    newUser.IdPictureUrl = $"profile/id/{idPictureFileName}";
+                }
 
-                    if (result.Succeeded)
+                var result = await _userManager.CreateAsync(newUser, userEnteredData.Password);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
                     {
-                        return RedirectToAction("Login", "Account");
+                        ModelState.AddModelError("", error.Description);
                     }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError("", error.Description);
-                        }
-                    }
-                
+                }
             }
 
-            return View(userEnteredData);
+            // Model state is not valid, return to the registration form with validation messages
+            return View("Register", userEnteredData);
         }
-        [HttpGet]
+    
+    [HttpGet]
         public IActionResult EditAccount(Guid id)
         {
 

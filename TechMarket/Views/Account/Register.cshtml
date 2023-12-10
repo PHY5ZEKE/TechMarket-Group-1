@@ -65,7 +65,6 @@
             <input asp-for="CityOrMunicipality" class="form-control" />
             <span asp-validation-for="CityOrMunicipality" class="text-danger"></span>
 
-
             <label asp-for="Province">Province</label>
             <input asp-for="Province" class="form-control" />
             <span asp-validation-for="Province" class="text-danger"></span>
@@ -99,8 +98,8 @@
             <input type="submit" value="Register" class="btn btn-primary rounded-pill">
         </div>
 
-        <div class="text">
-            <p>Already have an account? <a asp-controller="Account" asp-action="Login"><span style="color:blue">Login now!</span></a></p>
-        </div>
+        
+
+        <div asp-validation-summary="All" class="text-danger"></div>
     </form>
 </div>

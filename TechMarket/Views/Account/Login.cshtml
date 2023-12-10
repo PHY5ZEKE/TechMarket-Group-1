@@ -36,13 +36,14 @@
             <div class="form-group">
                 <label asp-for="UserName">Username</label>
                 <input asp-for="UserName" placeholder="Your Username" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
+            
             </div>
             <div class="form-group">
                 <label asp-for="Password">Password</label>
                 <input asp-for="Password" type="password" placeholder="Your Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+            
             </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <br />
             <div>
                 <button type="submit" class="btn btn-primary rounded-pill">Login</button>

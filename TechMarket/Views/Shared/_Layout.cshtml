@@ -10,13 +10,12 @@
     <link rel="stylesheet" href="~/css/Register.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Account.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TechMarket.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/sidebar.css" asp-append-version="true" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow mb-3 custom-navbar fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="navbar-brand">
                     <img src="~/logo.png" alt="TechMarket Logo" />
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -53,95 +52,50 @@
         </nav>
         @if (User.Identity.IsAuthenticated)
         {
-            <nav class="sidebar">
-                <div class="menu_content">
-                    <ul class="menu_items">
-                        <div class="menu_title menu_dahsboard"></div>
-                        <!-- start -->
-                        <li class="item">
-                            <div href="#" class="nav_link submenu_item">
-                                <span class="navlink_icon">
-                                    <i class='bx bx-book-add'></i>
-                                </span>
-                                <a class="navlink" asp-controller="Product" asp-action="AddProduct">Add Product</a>
-                            </div>
-                        </li>
-                        <!-- end -->
-                        <!-- start -->
-                        <li class="item">
-                            <div href="#" class="nav_link submenu_item">
-                                <span class="navlink_icon">
-                                    <i class="bx bx-grid-alt"></i>
-                                </span>
-                                <a class="navlink" asp-area="" asp-controller="Product" asp-action="Index">Main</a>
-                            </div>
-                        </li>
-                        <!-- end -->
-                        <!-- start -->
-                        <li class="item">
-                            <div href="#" class="nav_link submenu_item">
-                                <span class="navlink_icon">
-                                    <i class='bx bx-category-alt'></i>
-                                </span>
-                                <span class="navlink">Category</span>
-                                <i class="bx bx-chevron-right arrow-left"></i>
-                            </div>
-
-                            <ul class="menu_items submenu">
-                                <a class="nav_link sublink" asp-controller="Product" asp-action="Smartphones">Smartphones</a>
-                                <a class="nav_link sublink" asp-controller="Product" asp-action="Computers">Computers</a>
-                                <a class="nav_link sublink" asp-controller="Product" asp-action="Audio">Audio</a>
-                                <a class="nav_link sublink" asp-controller="Product" asp-action="Cameras">Cameras</a>
-                                <a class="nav_link sublink" asp-controller="Product" asp-action="Accessories">Accessories</a>
-                                <a class="nav_link sublink" asp-controller="Product" asp-action="Misc">Misc</a>
-                            </ul>
-                        </li>
-                        <!-- end -->
-                        <!-- start -->
-                        @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == "ea68465f-1dba-4e0b-96db-1aee74bc4743")
-                        {
-                            <li class="item">
-                                <div href="#" class="nav_link submenu_item">
-                                    <span class="navlink_icon">
-                                        <i class='bx bx-cog'></i>
-                                    </span>
-                                    <span class="navlink">Admin Privileges</span>
-                                    <i class="bx bx-chevron-right arrow-left"></i>
-                                </div>
-
-                                <ul class="menu_items submenu">
-
-                                    <a class="nav_link sublink" asp-action="Index" asp-controller="Account">User Accounts</a>
-                                    <a class="nav_link sublink" asp-action="AdminProductView" asp-controller="Product">Uploaded Products</a>
-                                </ul>
-                            </li>
-                        }
-                        <!-- end -->
-                        <!-- start -->
-                        <li class="item">
-                            <div href="#" class="nav_link submenu_item">
-                                <span class="navlink_icon">
-                                    <i class='bx bx-user-circle'></i>
-                                </span>
-                                <span class="navlink">My Account</span>
-                                <i class="bx bx-chevron-right arrow-left"></i>
-                            </div>
-
-                            <ul class="menu_items submenu">
-                                <a class="nav_link sublink" asp-area="" asp-action="Profile" asp-controller="Account">Profile</a>
-                                <a class="nav_link sublink" asp-controller="Product" asp-action="Listing">My Listings</a>
-                                <a class="nav_link sublink" asp-action="Purchases" asp-controller="Product">My Purchases</a>
-                                <a class="nav_link sublink" asp-action="Sold" asp-controller="Product">Sold</a>
-                                <a class="nav_link sublink" asp-action="ToReceive" asp-controller="Product">To Receive</a>
-                                <a class="nav_link sublink" asp-action="ToShip" asp-controller="Product">To Ship</a>
-                            </ul>
-                        </li>
-                        <!-- end -->
-                    </ul>
-
+            <div class="sidenav">
+                <a class="btn btn-primary" asp-controller="Product" asp-action="AddProduct">Add Product</a>
+                <a asp-area="" asp-controller="Product" asp-action="Index">Main</a>
+                <button class="dropdown-btn">
+                    Categories
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-container">
+                    <a asp-controller="Product" asp-action="Smartphones">Smartphones</a>
+                    <a asp-controller="Product" asp-action="Computers">Computers</a>
+                    <a asp-controller="Product" asp-action="Audio">Audio</a>
+                    <a asp-controller="Product" asp-action="Cameras">Cameras</a>
+                    <a asp-controller="Product" asp-action="Accessories">Accessories</a>
+                    <a asp-controller="Product" asp-action="Misc">Misc</a>
                 </div>
-            </nav>
+
+                @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == "ea68465f-1dba-4e0b-96db-1aee74bc4743")
+                {
+                    <button class="dropdown-btn">
+                        Admin Privileges
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container">
+                        <a asp-action="Index" asp-controller="Account">User Accounts</a>
+                        <a asp-action="AdminProductView" asp-controller="Product">Uploaded Products</a>
+                    </div>
+                }
+
+                <button class="dropdown-btn">
+                    My Account
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-container">
+                    <a asp-area="" asp-action="Profile" asp-controller="Account">Profile</a>
+                    <a asp-controller="Product" asp-action="Listing">My Listings</a>
+                    <a asp-action="Purchases" asp-controller="Product">My Purchases</a>
+                    <a asp-action="Sold" asp-controller="Product">Sold</a>
+                    <a asp-action="ToReceive" asp-controller="Product">To Receive</a>
+                    <a asp-action="ToShip" asp-controller="Product">To Ship</a>
+                </div>
+            </div>
         }
+
+
 
     </header>
     <div class="container">
@@ -158,7 +112,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/sidebar.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

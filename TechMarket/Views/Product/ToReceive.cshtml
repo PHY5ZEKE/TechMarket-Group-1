@@ -1,4 +1,13 @@
 ﻿@model List<TechMarket.Models.ToReceiveProduct>
+<style>
+    body {
+        margin-left: 225px;
+        background-color: #f8f9fa;
+        color: #343a40;
+        padding-top: 20px !important;
+    }
+
+</style>
 
 <!--css-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -20,13 +29,18 @@
         $('#confirmReceivedModal').modal('hide');
     }
 </script>
-
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
 <h2>Products to Receive</h2>
 
 @if (Model.Any())
 {
-    <table cellpadding="0" cellspacing="0" border="0">
+    <table class="table">
         <thead>
             <tr>
                 <th>Product Name</th>

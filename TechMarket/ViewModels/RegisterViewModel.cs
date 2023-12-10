@@ -18,6 +18,8 @@ namespace TechMarket.ViewModels
         [Display(Name = "Email Address")]
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Email address is required!")]
+        [EmailAddress(ErrorMessage = "Invalid email format.")]
+        [Remote("IsEmailUnique", "User", ErrorMessage = "Email address is already taken.")]
         public string? Email { get; set; }
 
         [Display(Name = "User Name")]
@@ -37,21 +39,28 @@ namespace TechMarket.ViewModels
 
         // Segmented Address Fields
         [Display(Name = "Building/House Number")]
+        [Required(ErrorMessage = "This field is required!")]
         public string? BuildingNumber { get; set; }
 
         [Display(Name = "Street Name")]
+        [Required(ErrorMessage = "This field is required!")]
         public string? StreetName { get; set; }
 
         [Display(Name = "Barangay")]
+        [Required(ErrorMessage = "This field is required!")]
         public string? Barangay { get; set; }
 
         [Display(Name = "City/Municipality")]
+        [Required(ErrorMessage = "This field is required!")]
         public string? CityOrMunicipality { get; set; }
 
         [Display(Name = "Province")]
+        [Required(ErrorMessage = "This field is required!")]
         public string? Province { get; set; }
 
         [Display(Name = "Postal Code")]
+        [Required(ErrorMessage = "This field is required!")]
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Postal code must be a number.")]
         public string? PostalCode { get; set; }
         // End of Segmented Address Fields
 
@@ -62,12 +71,16 @@ namespace TechMarket.ViewModels
 
         [Display(Name = "Phone Number")]
         [Required(ErrorMessage = "This field is required!")]
+        [RegularExpression(@"^(09|\+639)\d{9}$", ErrorMessage = "Invalid Filipino mobile number format.")]
         public string? Phone { get; set; }
 
+
         [Display(Name = "Profile Picture")]
+        [Required(ErrorMessage = "Profile picture is required!")]
         public IFormFile? ProfilePicture { get; set; }
 
         [Display(Name = "ID Picture")]
+        [Required(ErrorMessage = "ID picture is required!")]
         public IFormFile? IdPicture { get; set; }
     }
 }

@@ -11,6 +11,7 @@ html {
         font-size: 16px;
     }
 }
+
 body {
     font-family: 'Poppins';
     margin: 0 0 0 205px;
@@ -18,7 +19,7 @@ body {
 /* Home Page CSS */
 .text-center {
     overflow: hidden;
-    text-align: center; 
+    text-align: center;
     height: auto;
     background: #F5F7FF;
     border-radius: 20px;
@@ -118,7 +119,6 @@ a.navbar-brand img {
     height: 100%;
     width: 200px;
     position: fixed;
-    
     top: 100px; /* Adjusted top position to avoid overlapping the top navbar */
     left: 0;
     background-color: #111;

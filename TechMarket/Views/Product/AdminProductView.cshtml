@@ -19,20 +19,12 @@
      }
 </style>
 
-<div class="event__search__floater">
-    <div class="search__anchor">
-        <form id="event-search-form" action="@Url.Action("Index", "Product")" method="get">
-            <input type="text" class="search__bar" placeholder="Search Product" name="searchQuery">
-            <input class="search__submit" type="submit">
-            <div class="search__toggler"></div>
-        </form>
-    </div>
-</div>
+
 
 <br />
 
 <link rel="stylesheet" href="~/css/product.css">
-
+<h2>Uploaded Products</h2>
 <table>
     <thead>
         <tr>
@@ -47,9 +39,8 @@
         {
             <tr>
                 <td>
-                    <div class="image">
-                        <img src="~/@product.ProdImageURL" class="img-thumbnail img-fluid" />
-                    </div>
+                    <img src="~/@product.ProdImageURL" class="img img-thumbnail" width="200" height="150" />
+
                 </td>
                 <td>@product.ProdName</td>
                 <td>₱@product.ProdPrice</td>

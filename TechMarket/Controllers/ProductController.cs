@@ -128,6 +128,7 @@ namespace TechMarket.Controllers
                 newProduct.SellerLName = user.LastName;
                 newProduct.SellerPfp = user.ProfilePictureUrl;
                 newProduct.SellerID = user.IdPictureUrl;
+                 
                 if (newProduct.ProdImage != null)
                 {
                     string folder = "products/image/";
