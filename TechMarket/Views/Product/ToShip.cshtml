@@ -4,12 +4,13 @@
         margin-left: 220px;
         background-color: #f8f9fa;
         color: #343a40;
+        padding-top: 20px !important;
     }
 
 </style>
 <!-- Add these links in the head section of your HTML file -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="~/css/table.css" asp-append-version="true" />
+@* <link rel="stylesheet" href="~/css/table.css" asp-append-version="true" /> *@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -18,10 +19,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-<br />
-<br />
-<br />
-<br />
 <br />
 <br />
 
@@ -67,7 +64,7 @@
                            data-product-id="@productToShip.ToShipProductId"
                            data-toggle="modal"
                            data-target="#confirmShipModal">
-                            Confirm Product Shipped
+                            Confirm Shipment
                         </a>
 
                     </td>
