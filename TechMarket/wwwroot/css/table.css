@@ -91,12 +91,17 @@ thead {
 	cursor: pointer;
 }
 
+
 /* Media Query for Small Screens */
-@media only screen and (max-width: 1500px) {
+
+@media only screen and (max-width: 958px) {
 	.container {
 		right: 0;
+		left: 50%;
+		transform: translateX(-50%); /* Use transform to center the container */
 	}
 	table {
+		width: 100%;
 		width: 100%;
 		overflow-x: auto;
 		display: block; /* Ensure that the table is a block element */
