@@ -55,30 +55,23 @@
 
 <h1>Edit Account</h1>
 
-<form asp-action="EditAccount" method="post">
+<form asp-action="EditAccount" method="post" onsubmit="return validateForm()">
     <div class="form-group">
         <label asp-for="FirstName">First Name</label>
-        <input asp-for="FirstName" class="form-control" />
+        <input asp-for="FirstName" class="form-control" required maxlength="60" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="LastName">Last Name</label>
-        <input asp-for="LastName" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Email">Email</label>
-        <input asp-for="Email" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="UserName">Username</label>
-        <input asp-for="UserName" class="form-control" />
+        <input asp-for="LastName" class="form-control" required maxlength="60" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Address">Address</label>
-        <input asp-for="Address" class="form-control" />
+        <input asp-for="Address" class="form-control" required />
+        <span asp-validation-for="Address" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -88,7 +81,8 @@
 
     <div class="form-group">
         <label asp-for="Phone">Contact</label>
-        <input asp-for="Phone" class="form-control" />
+        <input asp-for="Phone" class="form-control" pattern="(\+63|0)[0-9]{9,10}" title="Please enter a valid Filipino number format (09XXXXXXXXX or +639XXXXXXXXX)" required />
+        <span asp-validation-for="Phone" class="text-danger"></span>
     </div>
 
     <div>
@@ -96,3 +90,19 @@
         <button type="submit" class="btn btn-primary">Save</button>
     </div>
 </form>
+<script>
+    function validateForm() {
+        // Custom validation for Filipino number format
+        var phoneInput = document.querySelector('input[name="Phone"]');
+        var phoneRegex = /(\+63|0)[0-9]{9,10}/;
+
+        if (!phoneRegex.test(phoneInput.value)) {
+            alert("Please enter a valid Filipino number format (09XXXXXXXXX or +639XXXXXXXXX).");
+            return false;
+        }
+
+        // Additional custom validations can be added here if needed
+
+        return true;
+    }
+</script>
