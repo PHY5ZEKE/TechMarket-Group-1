@@ -1,120 +1,171 @@
 ﻿@model List<TechMarket.Models.ToReceiveProduct>
-<style>
-    body {
-        margin-left: 225px;
-        background-color: #f8f9fa;
-        color: #343a40;
-        padding-top: 20px !important;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Products to Receive</title>
 
-</style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
-<!--css-->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-@* <link rel="stylesheet" href="~/css/table.css" asp-append-version="true" /> *@
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            margin-left: 80px;
+            background-color: #f8f9fa;
+            color: #343a40;
+            padding-top: 150px !important;
+            font-family: 'Poppins';
+        }
 
-<script>
-    function confirmReceived(productId) {
-        $('#confirmReceivedModal').modal('show');
+        h2, p {
+            text-align: left;
+            color: #ffffff;
+        }
 
-        // Set the product ID in the modal's form action
-        $('#confirmReceivedForm').attr('action', '/Product/DeleteToReceiveProduct/' + productId);
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(155, 136, 136, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
 
-    }
+        th, td {
+            padding: 15px;
+            background-color: rgba(221, 247, 255, 0.3);
+            color: #ffffff;
+            text-align: left;
+        }
 
-    function closeConfirmReceivedModal() {
-        $('#confirmReceivedModal').modal('hide');
-    }
-</script>
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
+        th {
+            background-color: rgba(221, 247, 255, 0.3);
+        }
 
-<h2>Products to Receive</h2>
+        thead {
+            background-color: #021568;
+        }
+        tbody{
+            background-color: #02012d;
+        }
 
-@if (Model.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Image</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Purchase Date</th>
-                <th>Seller</th>
-                <th>Seller Email</th>
-                <th>Seller Contact</th>
-                <th>Action</th>
-               
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var productToReceive in Model)
-            {
+        .btn {
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+        }
+
+        /* Add your custom styling here */
+
+    </style>
+</head>
+<body>
+    <h2>Products to Receive</h2>
+
+    @if (Model.Any())
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@productToReceive.ProductName</td>
-                    <td>
-                        @* Display the product image, adjust the path accordingly *@
-                        <img src="~/@productToReceive.ProductImageURL" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
-                    </td>
-                    <td>@productToReceive.ProductDescription</td>
-                    <td>@productToReceive.ProductPrice</td>
-                    <td>@productToReceive.PurchaseDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                    <td>
-                        <a asp-controller="Product" asp-action="SellerInformation" asp-route-sellerId="@productToReceive.SellerId">
-                            @productToReceive.SellerName
-                        </a>
-                    </td>
-                    <td>@productToReceive.SellerEmail</td>
-                    <td>@productToReceive.SellerContact</td>
-                    <td>
-                        <a href="@Url.Action("ShowDetailsToReceive", "Product", new { id = productToReceive.ToReceiveProductId })" class="btn btn-primary">Show Details</a> <br> <br>
-                        <a class="btn btn-warning" onclick="confirmReceived('@productToReceive.ToReceiveProductId')">
-                            Confirm Product Received
-                        </a>
-
-                    </td>
-
+                    <th>Product Name</th>
+                    <th>Image</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Purchase Date</th>
+                    <th>Seller</th>
+                    <th>Seller Email</th>
+                    <th>Seller Contact</th>
+                    <th>Action</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No products to receive.</p>
-}
+            </thead>
+            <tbody>
+                @foreach (var productToReceive in Model)
+                {
+                    <tr>
+                        <td>@productToReceive.ProductName</td>
+                        <td>
+                            <img src="~/@productToReceive.ProductImageURL" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+                        </td>
+                        <td>@productToReceive.ProductDescription</td>
+                        <td>@productToReceive.ProductPrice</td>
+                        <td>@productToReceive.PurchaseDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>
+                            <a asp-controller="Product" asp-action="SellerInformation" asp-route-sellerId="@productToReceive.SellerId">
+                                @productToReceive.SellerName
+                            </a>
+                        </td>
+                        <td>@productToReceive.SellerEmail</td>
+                        <td>@productToReceive.SellerContact</td>
+                        <td>
+                            <a href="@Url.Action("ShowDetailsToReceive", "Product", new { id = productToReceive.ToReceiveProductId })" class="btn btn-primary">Show Details</a>
+                            <br /><br />
+                            <a class="btn btn-warning" onclick="confirmReceived('@productToReceive.ToReceiveProductId')">
+                                Confirm Received
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-<!-- Modal for confirmation -->
-<div class="modal" tabindex="-1" role="dialog" id="confirmReceivedModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirm Product Shipped</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeConfirmReceivedModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure the product has been shipped?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeConfirmReceivedModal()">Cancel</button>
-                <form id="confirmReceivedForm" method="post">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-warning">Confirm</button>
-                </form>
+        <!-- Modal for confirmation -->
+        <div class="modal" tabindex="-1" role="dialog" id="confirmReceivedModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm Product Received</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeConfirmReceivedModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p style="color: #02012d;padding: 10px;">Are you sure the product has been shipped?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeConfirmReceivedModal()">Cancel</button>
+                        <form id="confirmReceivedForm" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-warning">Confirm</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
+        <!-- JavaScript to handle confirmation -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-<!-- Add these links in the head section of your HTML file -->
+        <script>
+            function confirmReceived(productId) {
+                $('#confirmReceivedModal').modal('show');
+                $('#confirmReceivedForm').attr('action', '/Product/DeleteToReceiveProduct/' + productId);
+            }
+
+            function closeConfirmReceivedModal() {
+                $('#confirmReceivedModal').modal('hide');
+            }
+        </script>
+    }
+    else
+    {
+        <p>No products to receive.</p>
+    }
+</body>
+</html>

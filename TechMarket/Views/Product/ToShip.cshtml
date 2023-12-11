@@ -1,113 +1,170 @@
 ﻿@model List<TechMarket.Models.ToShipProduct>
-<style>
-    body {
-        margin-left: 220px;
-        background-color: #f8f9fa;
-        color: #343a40;
-        padding-top: 20px !important;
-    }
 
-</style>
-<!-- Add these links in the head section of your HTML file -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-@* <link rel="stylesheet" href="~/css/table.css" asp-append-version="true" /> *@
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Products to Ship</title>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
-<br />
-<br />
+    <style>
+        body {
+            margin-left: 80px;
+            background-color: #f8f9fa;
+            color: #343a40;
+            padding-top: 20px !important;
+            font-family: 'Poppins';
+        }
 
-<h2>Products to Ship</h2>
+        h2 {
+            text-align: left;
+            color: rgb(0, 0, 0);
+        }
 
-@if (Model.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Image</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Purchase Date</th>
-                <th>Buyer</th>
-                <th>Address to Ship</th>
-                <th>Buyer Email</th>
-                <th>Buyer Contact</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var productToShip in Model)
-            {
+        h2, p {
+            color: #ffffff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(155, 136, 136, 0.1);
+            border-radius: 10px;
+            margin-top: 120px;
+            
+        }
+
+        th, td {
+            padding: 15px;
+            background-color: #02012d;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        th {
+            background-color: rgba(221, 247, 255, 0.3);
+        }
+
+        thead {
+            background-color: #021568;
+        }
+
+        tbody{
+            background-color: #02012d;
+        }
+
+        .btn {
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <h2>Products to Ship</h2>
+
+    @if (Model.Any())
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@productToShip.ProductName</td>
-                    <td>
-                        @* Display the product image, adjust the path accordingly *@
-                        <img src="~/@productToShip.ProductImageURL" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
-                    </td>
-                    <td>@productToShip.ProductDescription</td>
-                    <td>@productToShip.ProductPrice</td>
-                    <td>@productToShip.PurchaseDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                    <td>@productToShip.BuyerName</td>
-                    <td>@productToShip.BuyerAddress</td>
-                    <td>@productToShip.BuyerEmail</td>
-                    <td>@productToShip.BuyerContact</td>
-                    <td>
-                        @* Assuming you want to show the details for each product to ship *@
-                        <a href="@Url.Action("ShowDetailsToShip", "Product", new { id = productToShip.ProductId })" class="btn btn-primary">Show Details</a> <br><br>
-                        <a class="btn btn-warning confirm-ship-btn"
-                           data-product-id="@productToShip.ToShipProductId"
-                           data-toggle="modal"
-                           data-target="#confirmShipModal">
-                            Confirm Shipment
-                        </a>
-
-                    </td>
-
+                    <th>Product Name</th>
+                    <th>Image</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Purchase Date</th>
+                    <th>Buyer</th>
+                    <th>Address to Ship</th>
+                    <th>Buyer Email</th>
+                    <th>Buyer Contact</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var productToShip in Model)
+                {
+                    <tr>
+                        <td>@productToShip.ProductName</td>
+                        <td>
+                            <img src="~/@productToShip.ProductImageURL" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+                        </td>
+                        <td>@productToShip.ProductDescription</td>
+                        <td>@productToShip.ProductPrice</td>
+                        <td>@productToShip.PurchaseDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>@productToShip.BuyerName</td>
+                        <td>@productToShip.BuyerAddress</td>
+                        <td>@productToShip.BuyerEmail</td>
+                        <td>@productToShip.BuyerContact</td>
+                        <td>
+                            <a href="@Url.Action("ShowDetailsToShip", "Product", new { id = productToShip.ProductId })" class="btn btn-primary">Show Details</a>
+                            <br /><br />
+                            <a class="btn btn-warning confirm-ship-btn"
+                               data-product-id="@productToShip.ToShipProductId"
+                               data-toggle="modal"
+                               data-target="#confirmShipModal">
+                                Confirm Shipment
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-    <div class="modal fade" id="confirmShipModal" tabindex="-1" role="dialog" aria-labelledby="confirmShipModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmShipModalLabel">Confirm Shipment</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Are you sure that the product has been shipped?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <a href="#" id="confirmShipBtn" class="btn btn-warning">Yes, Confirm Shipment</a>
+        <div class="modal fade" id="confirmShipModal" tabindex="-1" role="dialog" aria-labelledby="confirmShipModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmShipModalLabel">Confirm Shipment</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure that the product has been shipped?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <a href="#" id="confirmShipBtn" class="btn btn-warning">Yes, Confirm Shipment</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- JavaScript to handle confirmation -->
-    <script>
-        $(document).ready(function () {
-            $(".confirm-ship-btn").click(function () {
-                var productId = $(this).data("product-id");
-                $("#confirmShipBtn").attr("href", "/Product/TransferToReceive?toShipProductId=" + productId);
+        <!-- JavaScript to handle confirmation -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $(".confirm-ship-btn").click(function () {
+                    var productId = $(this).data("product-id");
+                    $("#confirmShipBtn").attr("href", "/Product/TransferToReceive?toShipProductId=" + productId);
+                });
             });
-        });
-    </script>
-}
-else
-{
-    <p>No products to ship.</p>
-}
-
-
-
+        </script>
+    }
+    else
+    {
+        <p>No products to ship.</p>
+    }
+</body>
+</html>
