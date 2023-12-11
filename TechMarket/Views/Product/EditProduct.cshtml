@@ -104,12 +104,15 @@
     <div class="column">
         <div class="form-group">
             <label asp-for="ProdName">Product Name</label>
-            <input asp-for="ProdName" class="form-control" />
+            <input asp-for="ProdName" class="form-control" required maxlength="60" />
+            <span asp-validation-for="ProdName" class="text-danger"></span>
         </div>
+
 
         <div class="form-group">
             <label asp-for="ProdDesc">Description</label>
-            <input asp-for="ProdDesc" class="form-control" />
+            <input asp-for="ProdDesc" class="form-control" required maxlength="150" />
+            <span asp-validation-for="ProdDesc" class="text-danger"></span>
         </div>
 
         <div class="form-group">
@@ -121,7 +124,27 @@
 
         <div class="form-group">
             <label asp-for="ProdPrice">Price</label>
-            <input asp-for="ProdPrice" class="form-control" />
+            <input asp-for="ProdPrice" class="form-control" type="number" min="50" max="999999" />
+            <span asp-validation-for="ProdPrice" class="text-danger"></span>
         </div>
+
     </div>
 </form>
+@section Scripts {
+    <script>
+        // Add client-side validation for ProdPrice
+        document.addEventListener("DOMContentLoaded", function () {
+            var prodPriceInput = document.querySelector('input[name="ProdPrice"]');
+            prodPriceInput.addEventListener("input", function () {
+                var value = parseInt(prodPriceInput.value);
+                var isValid = !isNaN(value) && value >= 50 && value <= 999999;
+
+                if (!isValid) {
+                    prodPriceInput.setCustomValidity("Price must be between 50 and 999999.");
+                } else {
+                    prodPriceInput.setCustomValidity("");
+                }
+            });
+        });
+    </script>
+}
