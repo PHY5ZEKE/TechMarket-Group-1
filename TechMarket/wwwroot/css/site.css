@@ -125,7 +125,9 @@ a.navbar-brand img {
     overflow-x: hidden;
     padding-top: 20px;
 }
-
+.logout{
+    padding-left: 86vw!important;
+}
     /* Style the sidenav links and the dropdown button */
     .sidenav a, .dropdown-btn {
         padding: 6px 8px 6px 16px;
